@@ -1,6 +1,14 @@
 {
   "name": "@dannyboyng/dialog",
-  "version": "1.0.0",
+  "description": "An Angular library to display dialog windows to the user",
+  "version": "1.0.1",
+  "license" : "MIT",
+  "keywords": [
+    "dialog",
+    "dialogs",
+    "angular",
+    "angular 6+"
+  ],
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"

@@ -54,9 +54,9 @@ async input() {
 
 async choice() {
   const choices: DialogChoice[] = [
-    {Key: 1, Value: 'Choice 1'},
-    {Key: 2, Value: 'Choice 2', Callback: () => alert('Callback for choice 2 executed.')},
-    {Key: 3, Value: 'Choice 3'}
+    {key: 1, value: 'Choice 1'},
+    {key: 2, value: 'Choice 2', Callback: () => alert('Callback for choice 2 executed.')},
+    {key: 3, value: 'Choice 3'}
   ];
   // Promise
   const response = await this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).toPromise<string>();
