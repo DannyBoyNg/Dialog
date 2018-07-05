@@ -6,19 +6,19 @@ export interface Dialog {
     viewContainerRef: ViewContainerRef;
     componentRef?: ComponentRef<DialogComponent>;
     responseRef?: Subject<any>;
-    Title?: string;
-    Type: DialogType;
-    Message: string | string[] | undefined;
-    Choices?: DialogChoice[];
-    Keyboard?: boolean;
-    Backdrop?: boolean | 'static';
-    AutoClose?: number;
+    title?: string;
+    type: DialogType;
+    message: string | string[] | undefined;
+    choices?: DialogChoice[];
+    keyboard?: boolean;
+    backdrop?: boolean | 'static';
+    autoClose?: number;
 }
 
 export interface DialogChoice {
-    Key: number|string;
-    Value: string;
-    Callback?: () => void;
+    key: number|string;
+    value: string;
+    callback?: () => void;
 }
 
 export enum DialogType {

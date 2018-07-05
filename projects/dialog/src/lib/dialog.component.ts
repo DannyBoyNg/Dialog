@@ -52,16 +52,16 @@ export class DialogComponent implements OnDestroy {
   init(dialog: Dialog) {
     this.componentRef = dialog.componentRef;
     this.responseRef = dialog.responseRef;
-    this.dialogMessage = dialog.Message || 'no message defined';
-    this.dialogTitle = dialog.Title || '';
-    this.dialogType = dialog.Type;
-    this.backDrop = dialog.Backdrop;
-    this.dialogChoices = (dialog.Choices) ? [...dialog.Choices].reverse() : [];
-    this.keyboard = (dialog.Keyboard != null) ? dialog.Keyboard : true;
-    this.closeDialogOnClickBackdrop = ((dialog.Backdrop != null && dialog.Backdrop !== 'static') || dialog.Backdrop == null) ? true : false;
+    this.dialogMessage = dialog.message || 'no message defined';
+    this.dialogTitle = dialog.title || '';
+    this.dialogType = dialog.type;
+    this.backDrop = dialog.backdrop;
+    this.dialogChoices = (dialog.choices) ? [...dialog.choices].reverse() : [];
+    this.keyboard = (dialog.keyboard != null) ? dialog.keyboard : true;
+    this.closeDialogOnClickBackdrop = ((dialog.backdrop != null && dialog.backdrop !== 'static') || dialog.backdrop == null) ? true : false;
     // auto close
-    if (dialog.AutoClose != null) {
-      const start = dialog.AutoClose;
+    if (dialog.autoClose != null) {
+      const start = dialog.autoClose;
       timer(100, 1000).pipe(
         map(x => start - x),
         take(start + 1),
@@ -78,9 +78,9 @@ export class DialogComponent implements OnDestroy {
       this.responseRef.next(response);
       this.responseRef.complete();
       // check if callback is defined
-      const choice = this.dialogChoices && this.dialogChoices.find(x => x.Key === response);
-      if (choice && choice.Callback && choice.Callback instanceof Function) {
-        choice.Callback();
+      const choice = this.dialogChoices && this.dialogChoices.find(x => x.key === response);
+      if (choice && choice.callback && choice.callback instanceof Function) {
+        choice.callback();
       }
     }
     if (this.componentRef != null) {this.componentRef.destroy(); }

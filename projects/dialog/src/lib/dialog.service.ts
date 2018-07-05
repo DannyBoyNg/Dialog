@@ -24,8 +24,8 @@ export class DialogService {
   info(viewContainerRef: ViewContainerRef, message: string) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
-      Message: message,
-      Type: DialogType.Info
+      message: message,
+      type: DialogType.Info
     };
     return this.open(dialog);
   }
@@ -33,8 +33,8 @@ export class DialogService {
   confirm(viewContainerRef: ViewContainerRef, message: string): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
-      Message: message,
-      Type: DialogType.Confirm
+      message: message,
+      type: DialogType.Confirm
     };
     return this.open(dialog);
   }
@@ -42,8 +42,8 @@ export class DialogService {
   input(viewContainerRef: ViewContainerRef, message: string) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
-      Message: message,
-      Type: DialogType.Input
+      message: message,
+      type: DialogType.Input
     };
     return this.open(dialog);
   }
@@ -51,8 +51,8 @@ export class DialogService {
   warning(viewContainerRef: ViewContainerRef, message: string|string[]) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
-      Message: message,
-      Type: DialogType.Warning
+      message: message,
+      type: DialogType.Warning
     };
     return this.open(dialog);
   }
@@ -60,8 +60,8 @@ export class DialogService {
   error(viewContainerRef: ViewContainerRef, message: string|string[]) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
-      Message: message,
-      Type: DialogType.Error
+      message: message,
+      type: DialogType.Error
     };
     return this.open(dialog);
   }
@@ -69,9 +69,9 @@ export class DialogService {
   choice(viewContainerRef: ViewContainerRef, message: string|string[], choices: DialogChoice[]) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
-      Message: message,
-      Type: DialogType.Choice,
-      Choices: choices,
+      message: message,
+      type: DialogType.Choice,
+      choices: choices,
     };
     return this.open(dialog);
   }

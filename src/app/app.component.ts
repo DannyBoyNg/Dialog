@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { DialogService } from 'projects/dialog/src/public_api';
-import { DialogChoice } from 'projects/dialog/src/lib/dialog.interfaces';
+import { DialogChoice, Dialog } from 'projects/dialog/src/lib/dialog.interfaces';
 
 @Component({
   selector: 'app-root',
@@ -44,9 +44,9 @@ export class AppComponent {
 
   async choice() {
     const choices: DialogChoice[] = [
-      {Key: 1, Value: 'Choice 1'},
-      {Key: 2, Value: 'Choice 2', Callback: () => alert('Callback for choice 2 executed.')},
-      {Key: 3, Value: 'Choice 3'}
+      {key: 1, value: 'Choice 1'},
+      {key: 2, value: 'Choice 2', callback: () => alert('Callback for choice 2 executed.')},
+      {key: 3, value: 'Choice 3'}
     ];
     // Promise
     const response = await this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).toPromise<string>();
