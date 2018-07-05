@@ -1,0 +1,40 @@
+<!-- The dialog -->
+<div class="dialog" [ngClass]="{'no-backdrop': backDrop === false}" (click)="clickOutsideDialog()">
+
+  <!-- dialog window -->
+  <div class="dialog-window" (click)="$event.stopPropagation()">
+    <div class="dialog-header">
+      <div class="dialog-title noselect">{{dialogTitle}}</div>
+      <div class="dialog-close noselect" (click)="closeDialog(false)">&times;</div>
+    </div>
+    <div class="dialog-content">
+      <div class="dialog-icon" [ngClass]="{'icon-info': dialogType===DialogType.Info, 'icon-warning':dialogType===DialogType.Warning, 'icon-error':dialogType===DialogType.Error, 'icon-question':dialogType===DialogType.Choice||dialogType===DialogType.Confirm||dialogType===DialogType.Input}"></div>
+      <div class="dialog-message">
+        <p *ngFor="let m of messageArray">{{m}}</p>
+      </div>
+      <div *ngIf="dialogType === DialogType.Input" class="dialog-input">
+        <input #inputEl class="dialog-input-box" type="text" (keyup)="onKey(inputEl.value)"> {{inputEl.focus()}}
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <ng-container [ngSwitch]="dialogType">
+        <ng-container *ngSwitchCase="DialogType.Choice">
+          <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
+          <button class="noselect" *ngFor="let choice of dialogChoices" (click)="closeDialog(choice.Key)">{{choice.Value}}</button>
+        </ng-container>
+        <ng-container *ngSwitchCase="DialogType.Confirm">
+          <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
+          <button class="noselect" (click)="closeDialog(true)">OK</button>
+        </ng-container>
+        <ng-container *ngSwitchCase="DialogType.Input">
+          <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
+          <button class="noselect" (click)="closeDialog(userInput)" [disabled]="userInput?.trim().length < 1">OK</button>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <button class="noselect" (click)="closeDialog(true)">OK <span *ngIf="countDown">({{countDown}})</span></button>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+</div>

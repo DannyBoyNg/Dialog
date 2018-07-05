@@ -1,0 +1,140 @@
+.dialog {
+  position: fixed; /* Stay in place */
+  z-index: 9000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  font-family: 'Segoe UI';
+  font-size: 11px;
+}
+.no-backdrop {
+  background-color: rgba(0,0,0,0); /* Black w/ opacity */
+}
+.dialog-window {
+  background-color: #fefefe;
+  margin: 30px auto; /* 30px from the top and centered */
+  border: 1px solid #1883D7;
+  width: 520px;
+  min-width: 285px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+.dialog-header {
+  width: 100%;
+  height: 30px;
+  background-color: #fff;
+}
+.dialog-title {
+  float: left;
+  line-height: 30px;
+  padding-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.dialog-close {
+  color: #555;
+  float: right;
+  font-size: 20px;
+  width: 35px;
+  height: 29px;
+  line-height: 25px;
+  text-align: center;
+}
+.dialog-close:hover,
+.dialog-close:focus {
+  background-color: #E81123;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.dialog-content {
+  position: relative;
+  min-height: 120px;
+  background-color: #F0F0F0;
+  font-family: 'Segoe UI';
+  font-size: 14px;
+}
+.dialog-footer {
+  padding-top: 8px;
+  min-height: 29px;
+  height: auto;
+  background-color: #F0F0F0;
+  overflow: auto;
+}
+.dialog-message {
+  padding: 15px 15px 5px 15px;
+  padding-left: 75px;
+}
+.dialog-icon {
+  position: absolute;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGIAAABgCAMAAADRs1c3AAAAA3NCSVQICAjb4U/gAAABgFBMVEUdBBDwOhcAd9fi0cX84QBioNZIQUPMlU3+yoUpZLApjd37zsUiIkWjzvDOkpKpZCn85ijM//9ab7L99vUwCQ7xQiD9851+RSLP5ff//8zzalBJnuKwmakWg9rpwpS11/OFMyqtbUWMjoyBvOvyVzlsJCD96Uf96+f1g238+Ovf39/4//8iIoX97Wn3lYP85BY3S1vw9/wXIiJFjs2fcklIc6SFyv7e7fnSm38iInD4qpt2oNS6lW5Jcp+/3fQCeNc+IiL84NtUpeX+++L6wbb973x/jKn99bP35s72inX85zXyUDH5tKdiIiIiIlMiIiLip2Ki2/5QUFD+/vfFyttnSjohe7ri/v5NHyDmtnn3o5Lz1qP3v34WEySiazD+1ZS6eyGPw+36x715tubCwr7++dUxkd7zYERbksWp1fD99ay65vj0dV397nEpIiIpMkU+mODFqpv//+peqeUbGxv////55+dmreeig3Di9OIHe9jl8fq7hVRFgL4jitz71c5E/WH/AAAAgHRSTlP///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8A/////////////w88N0AAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAFnRFWHRDcmVhdGlvbiBUaW1lADA3LzA0LzE4Q9j3ygAABx5JREFUaIG9mPtfUzcUwC/o8IG4brUdhSG6Qlt2h7X4qHQbb4ais9rohjq3iSvaKpVVL27g4F9fTl43J8m9rR+157ebm+SbnFdO4gWm+MPZ0bG9/v7+vbHR7LBv/beknc4likdBiolcum399/AnmVuC2UPZW5ojcfOT1cRRLIlVYwBCkMbJfltONiIhZLt41JbiNhqgI4a3HACQrWE3Ie0CMEjaifCze1I3Q+USbSiVh6TW9rIOm7RzSjfTzTptqDenldZybRtRGuWz7SDdk7mdedY8WjIJmYRL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);
+  background-repeat: no-repeat;
+  top: 30px;
+  left: 15px;
+  color: #0077D7;
+  height: 48px;
+  width: 49px;
+}
+.icon-question {
+  background-position: -49px -48px;
+}
+.icon-info {
+  background-position: 0 0;
+}
+.icon-error {
+  background-position: 0 -48px;
+}
+.icon-warning {
+  background-position: -49px 0;
+}
+.dialog-input {
+  padding: 10px 75px 10px 75px;
+  width: calc(100% - 150px);
+}
+.dialog-input-box {
+  width: calc(100% - 11px);
+  font-family: 'Segoe UI';
+  font-size: 14px;
+  padding-left:7px;
+}
+.circle-icon {
+  position: absolute;
+  top: 22px;
+  left: 6px;
+  color: #0077D7;
+}
+button {
+  float: right;
+  margin-right: 6px;
+  margin-bottom: 5px;
+  min-width: 73px;
+  border: solid 1px #ADADAD;
+  min-height: 21px;
+  background-color: #E1E1E1;
+  font-family: 'Segoe UI';
+  font-size: 12px;
+  line-height: 11px;
+}
+button:not([disabled]):hover {
+  border: solid 1px #0078D7;
+  background-color: #E5F1FB;
+}
+button:active {
+  border: solid 1px #005499;
+  background-color: #CCE4F7;
+}
+button[disabled] {
+  cursor: not-allowed;
+}
+p {
+  margin:4px 0;
+}
+.noselect {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */      
+}
