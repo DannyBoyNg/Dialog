@@ -1,27 +1,107 @@
-# DialogApp
+# Dialog
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+An Angular library to display dialog windows to the user
 
-## Development server
+## Dependancies
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+none
 
-## Code scaffolding
+## Installing
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Install from NPM
 
-## Build
+```bash
+npm install @dannyboyng/dialog
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Usage
 
-## Running unit tests
+Basic
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```typescript
+constructor(
+  private dialog: DialogService,
+  private viewContainerRef: ViewContainerRef, // get viewContainerRef from Dependancy Injection
+) {}
 
-## Running end-to-end tests
+info() {
+  this.dialog.info(this.viewContainerRef, 'For your information');
+}
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+warning() {
+  this.dialog.warning(this.viewContainerRef, 'Warning');
+}
 
-## Further help
+error() {
+  this.dialog.error(this.viewContainerRef, 'Error');
+}
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+async confirm() {
+  // Promise
+  const response = await this.dialog.confirm(this.viewContainerRef, 'Are you sure?').toPromise<boolean>();
+  console.log(response);
+  // Observable
+  this.dialog.confirm(this.viewContainerRef, 'Are you really sure?').subscribe((res: boolean) => console.log(res));
+}
+
+async input() {
+  // Promise
+  const response = await this.dialog.input(this.viewContainerRef, 'What is your name?').toPromise<string>();
+  console.log(response);
+  // Observable
+  this.dialog.input(this.viewContainerRef, 'What is your name again?').subscribe((res: string) => console.log(res));
+}
+
+async choice() {
+  const choices: DialogChoice[] = [
+    {Key: 1, Value: 'Choice 1'},
+    {Key: 2, Value: 'Choice 2', Callback: () => alert('Callback for choice 2 executed.')},
+    {Key: 3, Value: 'Choice 3'}
+  ];
+  // Promise
+  const response = await this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).toPromise<string>();
+  console.log(response);
+  // Observable
+  this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).subscribe((res: string) => console.log(res));
+}
+```
+
+Advanced
+
+```typescript
+const dialog: Dialog = {
+  viewContainerRef: this.viewContainerRef,
+  message: 'For your information',
+  type: DialogType.Info,
+  backdrop: false, // true: show a backdrop (default), false: don't show a backdrop, 'static': show but click on backdrop won't close dialog
+  autoClose: 10, // automatically close dialog in 10 seconds
+  keyboard: false, // true: Enter and Escape will close dialog (default), false: keyboard has no effect 
+  title: 'my custom dialog title'
+};
+this.dialog.open(dialog);
+
+const choices: DialogChoice[] = [
+  {key: 1, value: 'Choice 1'},
+  {key: 2, value: 'Choice 2'},
+  {key: 3, value: 'Choice 3'}
+];
+const dialog: Dialog = {
+  viewContainerRef: this.viewContainerRef,
+  message: 'Pick a choice',
+  type: DialogType.Choice,
+  choices: choices,
+  backdrop: 'static',
+  autoClose: 10,
+  keyboard: false,
+  title: 'my custom dialog title'
+};
+this.dialog.open(dialog);
+```
+
+## License
+
+This project is licensed under the MIT License.
+
+## Contributions
+
+Contributions are welcome.
