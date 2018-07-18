@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { DialogService } from 'projects/dialog/src/public_api';
-import { DialogChoice, Dialog } from 'projects/dialog/src/lib/dialog.interfaces';
+import { DialogChoice } from 'projects/dialog/src/lib/dialog.interfaces';
 
 @Component({
   selector: 'app-root',
@@ -52,6 +52,6 @@ export class AppComponent {
     const response = await this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).toPromise<string>();
     console.log(response);
     // Observable
-    this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).subscribe((res: string) => console.log(res));
+    this.dialog.choice(this.viewContainerRef, 'Please make a choice again', choices).subscribe((res: string) => console.log(res));
   }
 }
