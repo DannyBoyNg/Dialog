@@ -1,4 +1,4 @@
-import { Component, ComponentRef, HostListener, OnDestroy } from '@angular/core';
+import { Component, ComponentRef, HostListener, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { map, take, tap, takeUntil } from 'rxjs/operators';
 import { DialogChoice, DialogType, Dialog } from './dialog.interfaces';
@@ -25,7 +25,9 @@ export class DialogComponent implements OnDestroy {
   countDown: number|undefined;
   DialogType = DialogType;
 
-  constructor() {}
+  constructor(
+    private ref: ChangeDetectorRef,
+  ) {}
 
   ngOnDestroy() {
     this.autoUnsubscribe.next();
@@ -71,6 +73,7 @@ export class DialogComponent implements OnDestroy {
       ).subscribe();
     }
     this.updateDialog();
+    this.ref.markForCheck();
   }
 
   closeDialog(response?: any) {
