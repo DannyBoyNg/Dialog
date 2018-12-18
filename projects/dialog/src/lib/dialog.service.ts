@@ -21,7 +21,7 @@ export class DialogService {
     return responseRef.asObservable();
   }
 
-  info(viewContainerRef: ViewContainerRef, message: string) {
+  info(viewContainerRef: ViewContainerRef, message: string|string[]) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,
@@ -30,7 +30,7 @@ export class DialogService {
     return this.open(dialog);
   }
 
-  confirm(viewContainerRef: ViewContainerRef, message: string): Observable<any> {
+  confirm(viewContainerRef: ViewContainerRef, message: string|string[]): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,
@@ -39,7 +39,7 @@ export class DialogService {
     return this.open(dialog);
   }
 
-  input(viewContainerRef: ViewContainerRef, message: string) {
+  input(viewContainerRef: ViewContainerRef, message: string|string[]) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,

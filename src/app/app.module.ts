@@ -10,7 +10,7 @@ import { DialogModule } from 'projects/dialog/src/public_api';
   ],
   imports: [
     BrowserModule,
-    DialogModule,
+    DialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
