@@ -21,7 +21,7 @@ export class DialogService {
     return responseRef.asObservable();
   }
 
-  info(viewContainerRef: ViewContainerRef, message: string|string[]) {
+  info(viewContainerRef: ViewContainerRef, message: string|string[]|object) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,
@@ -30,7 +30,7 @@ export class DialogService {
     return this.open(dialog);
   }
 
-  confirm(viewContainerRef: ViewContainerRef, message: string|string[]): Observable<any> {
+  confirm(viewContainerRef: ViewContainerRef, message: string|string[]|object): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,
@@ -39,7 +39,7 @@ export class DialogService {
     return this.open(dialog);
   }
 
-  input(viewContainerRef: ViewContainerRef, message: string|string[]) {
+  input(viewContainerRef: ViewContainerRef, message: string|string[]|object) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,
@@ -48,7 +48,7 @@ export class DialogService {
     return this.open(dialog);
   }
 
-  warning(viewContainerRef: ViewContainerRef, message: string|string[]) {
+  warning(viewContainerRef: ViewContainerRef, message: string|string[]|object) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,
@@ -57,7 +57,7 @@ export class DialogService {
     return this.open(dialog);
   }
 
-  error(viewContainerRef: ViewContainerRef, message: string|string[]) {
+  error(viewContainerRef: ViewContainerRef, message: string|string[]|object) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,
@@ -66,7 +66,7 @@ export class DialogService {
     return this.open(dialog);
   }
 
-  choice(viewContainerRef: ViewContainerRef, message: string|string[], choices: DialogChoice[]) {
+  choice(viewContainerRef: ViewContainerRef, message: string|string[]|object, choices: DialogChoice[]) {
     const dialog: Dialog = {
       viewContainerRef: viewContainerRef,
       message: message,
