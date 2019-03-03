@@ -1,7 +1,7 @@
 {
   "name": "@dannyboyng/dialog",
   "description": "An Angular library to display dialog windows to the user",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license" : "MIT",
   "keywords": [
     "dialog",

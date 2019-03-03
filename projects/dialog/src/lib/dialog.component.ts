@@ -14,7 +14,7 @@ export class DialogComponent implements OnDestroy {
   private componentRef: ComponentRef<DialogComponent>|undefined;
   private responseRef: Subject<any>|undefined;
   private closeDialogOnClickBackdrop: boolean|undefined;
-  private dialogMessage: string|string[]|object|undefined;
+  private dialogMessage: string[]|undefined;
   private keyboard = true;
   userInput: string|undefined;
   dialogTitle = '';
@@ -54,7 +54,7 @@ export class DialogComponent implements OnDestroy {
   init(dialog: Dialog) {
     this.componentRef = dialog.componentRef;
     this.responseRef = dialog.responseRef;
-    this.dialogMessage = dialog.message || 'no message defined';
+    this.dialogMessage = dialog.message || ['no message defined'];
     this.dialogTitle = dialog.title || '';
     this.dialogType = dialog.type;
     this.backDrop = dialog.backdrop;
@@ -91,7 +91,7 @@ export class DialogComponent implements OnDestroy {
 
   updateDialog() {
     // set message to display
-    this.messageArray = this.prepMessage(this.dialogMessage);
+    this.messageArray = this.dialogMessage;
     // check for this common error
     for (const item of this.messageArray) {
       if (item === 'Http failure response for (unknown url): 0 Unknown Error') {
@@ -117,28 +117,6 @@ export class DialogComponent implements OnDestroy {
       case DialogType.Info:
       default:
         this.dialogTitle = this.dialogTitle || 'Info';
-    }
-  }
-
-  prepMessage(unknown: string|string[]|object): string[] {
-    const messageArray = [];
-    if (typeof unknown === 'string') {
-      messageArray.push(unknown);
-      return messageArray;
-    } else if (unknown instanceof Array) {
-      for (const part of unknown) {
-        if (typeof part === 'string') {
-          messageArray.push(part);
-        }
-      }
-      return messageArray;
-    } else if (typeof unknown === 'object') {
-      for (const [key, value] of Object.entries(unknown)) {
-        messageArray.push([`${key}: ${this.prepMessage(value).join(' ')}`]);
-      }
-      return messageArray;
-    } else {
-      return [''];
     }
   }
 

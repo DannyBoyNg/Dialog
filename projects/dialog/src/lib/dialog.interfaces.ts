@@ -8,7 +8,7 @@ export interface Dialog {
   responseRef?: Subject<any>;
   title?: string;
   type: DialogType;
-  message: string | string[] | object | undefined;
+  message: string[] | undefined;
   choices?: DialogChoice[];
   keyboard?: boolean;
   backdrop?: boolean | 'static';
