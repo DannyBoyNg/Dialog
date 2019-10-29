@@ -2,8 +2,8 @@
 <div class="dialog" [ngClass]="{'no-backdrop': backDrop === false}" (click)="clickOutsideDialog()">
 
   <!-- dialog window -->
-  <div class="dialog-window" (click)="$event.stopPropagation()">
-    <div class="dialog-header">
+  <div class="dialog-window" (click)="$event.stopPropagation()" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragBoundary=".cdk-overlay-container">
+    <div class="dialog-header" cdkDragHandle>
       <div class="dialog-title noselect">{{dialogTitle}}</div>
       <div class="dialog-close noselect" (click)="closeDialog(false)">&times;</div>
     </div>

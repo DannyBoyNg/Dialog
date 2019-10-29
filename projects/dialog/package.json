@@ -20,7 +20,8 @@
     "url": "https://github.com/DannyBoyNg/Dialog.git"
   },
   "peerDependencies": {
-    "@angular/common": ">=6.0.0 <9.0.0",
-    "@angular/core": ">=6.0.0 <9.0.0"
+    "@angular/common": ">=6.0.0 <12.0.0",
+    "@angular/core": ">=6.0.0 <12.0.0",
+    "@angular/cdk": ">=6.0.0 <12.0.0"
   }
 }
