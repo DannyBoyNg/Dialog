@@ -49,6 +49,16 @@ export class DialogComponent implements OnDestroy {
         this.closeDialog(true);
       }
     }
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  @HostListener('window:keypress', ['$event'])
+  @HostListener('window:keyup', ['$event'])
+  doNotCascade(e: KeyboardEvent) {
+    e.stopPropagation();
+    e.preventDefault();
   }
 
   init(dialog: Dialog) {
