@@ -54,4 +54,15 @@ export class AppComponent {
     // Observable
     this.dialog.choice(this.viewContainerRef, 'Please make a choice again', choices).subscribe((res: string) => console.log(res));
   }
+
+  async choice2() {
+    const choices: DialogChoice[] = [
+      {key: 1, value: 'Choice 1'},
+      {key: 2, value: 'Choice 2', autoSelect: 10},
+      {key: 3, value: 'Choice 3'}
+    ];
+    // Promise
+    const response = await this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).toPromise<string>();
+    console.log(response);
+  }
 }

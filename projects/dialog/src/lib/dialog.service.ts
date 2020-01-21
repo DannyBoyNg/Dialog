@@ -22,7 +22,7 @@ export class DialogService {
     if (this.refCount > 0 && currentMessage === this.lastMessage) {return responseRef.asObservable(); }
     this.lastMessage = currentMessage;
     this.refCount++;
-    responseRef.subscribe(null, null, () => {this.refCount--});
+    responseRef.subscribe({complete: () => this.refCount--});
     // create the a new dialog
     const factory = this.componentFactoryResolver.resolveComponentFactory(DialogComponent);
     dialog.componentRef = dialog.viewContainerRef.createComponent(factory);

@@ -8,16 +8,17 @@ export interface Dialog {
   responseRef?: Subject<any>;
   title?: string;
   type: DialogType;
-  message: string[] | undefined;
+  message: string[]|undefined;
   choices?: DialogChoice[];
   keyboard?: boolean;
-  backdrop?: boolean | 'static';
+  backdrop?: boolean|'static';
   autoClose?: number;
 }
 
 export interface DialogChoice {
   key: number|string;
   value: string;
+  autoSelect?: number;
   callback?: () => void;
 }
 

@@ -20,7 +20,7 @@
       <ng-container [ngSwitch]="dialogType">
         <ng-container *ngSwitchCase="DialogType.Choice">
           <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" *ngFor="let choice of dialogChoices" (click)="closeDialog(choice.key)">{{choice.value}}</button>
+          <button class="noselect" *ngFor="let choice of dialogChoices" (click)="closeDialog(choice.key)">{{choice.value}} <span *ngIf="choice.autoSelect">({{autoSelectTimer}})</span></button>
         </ng-container>
         <ng-container *ngSwitchCase="DialogType.Confirm">
           <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>

@@ -23,6 +23,7 @@ export class DialogComponent implements OnDestroy {
   backDrop: boolean|'static'|undefined;
   dialogChoices: DialogChoice[]|undefined;
   countDown: number|undefined;
+  autoSelectTimer: number|undefined;
   DialogType = DialogType;
 
   constructor(
@@ -81,6 +82,20 @@ export class DialogComponent implements OnDestroy {
         tap(x => { if (x === 0) {this.closeDialog(false); }}),
         takeUntil(this.autoUnsubscribe)
       ).subscribe();
+    }
+    // auto select
+    for(const item of this.dialogChoices) {
+      if (item.autoSelect != null || !isNaN(+item.autoSelect)) {
+        const start = item.autoSelect;
+        timer(100, 1000).pipe(
+          map(x => start - x),
+          take(start + 1),
+          tap(x => this.autoSelectTimer = x),
+          tap(x => { if (x === 0) {this.closeDialog(item.key); }}),
+          takeUntil(this.autoUnsubscribe)
+        ).subscribe();
+        break;
+      }
     }
     this.updateDialog();
     this.ref.markForCheck();

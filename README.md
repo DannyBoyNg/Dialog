@@ -73,16 +73,17 @@ const dialog: Dialog = {
   viewContainerRef: this.viewContainerRef,
   message: 'For your information',
   type: DialogType.Info,
-  backdrop: false, // true: show a backdrop (default), false: don't show a backdrop, 'static': show but click on backdrop won't close dialog
-  autoClose: 10, // automatically close dialog in 10 seconds
-  keyboard: false, // true: Enter and Escape will close dialog (default), false: keyboard has no effect 
+  backdrop: false, // true: show a backdrop (default), false: don't show a backdrop, 'static': show backdrop but click on backdrop won't close dialog
+  autoClose: 10, // automatically close/cancel dialog in 10 seconds
+  keyboard: false, // true: Enter and Escape will close dialog (default), false: keyboard has no effect
   title: 'my custom dialog title'
 };
 this.dialog.open(dialog);
 
 const choices: DialogChoice[] = [
   {key: 1, value: 'Choice 1'},
-  {key: 2, value: 'Choice 2'},
+  {key: 2, value: 'Choice 2', autoSelect: 10}, // automatically select choice2 in 10 seconds if no user interaction
+  // only use autoSelect on one choice otherwise you may experience undefined behavior
   {key: 3, value: 'Choice 3'}
 ];
 const dialog: Dialog = {
