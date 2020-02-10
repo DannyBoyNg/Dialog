@@ -3,7 +3,7 @@ import { DialogComponent } from './dialog.component';
 import { Subject } from 'rxjs';
 
 export interface Dialog {
-  viewContainerRef: ViewContainerRef;
+  viewContainerRef?: ViewContainerRef;
   componentRef?: ComponentRef<DialogComponent>;
   responseRef?: Subject<any>;
   title?: string;

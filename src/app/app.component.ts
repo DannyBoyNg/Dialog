@@ -12,34 +12,36 @@ export class AppComponent {
   constructor(
     private dialog: DialogService,
     private viewContainerRef: ViewContainerRef,
-  ) {}
+  ) {
+    this.dialog.setViewContainerRef(this.viewContainerRef);
+  }
 
   info() {
-    this.dialog.info(this.viewContainerRef, 'For your information');
+    this.dialog.info('For your information');
   }
 
   warning() {
-    this.dialog.warning(this.viewContainerRef, 'Warning');
+    this.dialog.warning('Warning');
   }
 
   error() {
-    this.dialog.error(this.viewContainerRef, 'Error');
+    this.dialog.error('Error');
   }
 
   async confirm() {
     // Promise
-    const response = await this.dialog.confirm(this.viewContainerRef, 'Are you sure?').toPromise<boolean>();
+    const response = await this.dialog.confirm('Are you sure?').toPromise<boolean>();
     console.log(response);
     // Observable
-    this.dialog.confirm(this.viewContainerRef, 'Are you really sure?').subscribe((res: boolean) => console.log(res));
+    this.dialog.confirm('Are you really sure?').subscribe((res: boolean) => console.log(res));
   }
 
   async input() {
     // Promise
-    const response = await this.dialog.input(this.viewContainerRef, 'What is your name?').toPromise<string>();
+    const response = await this.dialog.input('What is your name?').toPromise<string>();
     console.log(response);
     // Observable
-    this.dialog.input(this.viewContainerRef, 'What is your name again?').subscribe((res: string) => console.log(res));
+    this.dialog.input('What is your name again?').subscribe((res: string) => console.log(res));
   }
 
   async choice() {
@@ -49,10 +51,10 @@ export class AppComponent {
       {key: 3, value: 'Choice 3'}
     ];
     // Promise
-    const response = await this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).toPromise<string>();
+    const response = await this.dialog.choice('Please make a choice', choices).toPromise<string>();
     console.log(response);
     // Observable
-    this.dialog.choice(this.viewContainerRef, 'Please make a choice again', choices).subscribe((res: string) => console.log(res));
+    this.dialog.choice('Please make a choice again', choices).subscribe((res: string) => console.log(res));
   }
 
   async choice2() {
@@ -62,7 +64,7 @@ export class AppComponent {
       {key: 3, value: 'Choice 3'}
     ];
     // Promise
-    const response = await this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).toPromise<string>();
+    const response = await this.dialog.choice('Please make a choice', choices).toPromise<string>();
     console.log(response);
   }
 }

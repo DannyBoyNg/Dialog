@@ -8,12 +8,17 @@ import { DialogComponent } from './dialog.component';
 })
 export class DialogService {
 
+  private rootViewContainerRef: ViewContainerRef|undefined;
   private refCount = 0;
   private lastMessage = '';
 
   constructor(
     @Inject(ComponentFactoryResolver) private componentFactoryResolver: ComponentFactoryResolver
   ) { }
+
+  setViewContainerRef(viewContainerRef: ViewContainerRef) {
+    this.rootViewContainerRef = viewContainerRef;
+  }
 
   open(dialog: Dialog) {
     const responseRef = new Subject<any>();
@@ -25,60 +30,72 @@ export class DialogService {
     responseRef.subscribe({complete: () => this.refCount--});
     // create the a new dialog
     const factory = this.componentFactoryResolver.resolveComponentFactory(DialogComponent);
+    if (dialog.viewContainerRef == null) {
+      console.error(
+`Missing ViewContainerRef. Please set the viewContainerRef in the dialog service in app.component.ts
+----------------------------------------------------------------------------------------------------
+constructor(
+  private dialog: DialogService,
+  private viewContainerRef: ViewContainerRef,
+) {
+  this.dialog.setViewContainerRef(this.viewContainerRef);
+}`);
+      throw Error('ViewContainerRef not found');
+    }
     dialog.componentRef = dialog.viewContainerRef.createComponent(factory);
     dialog.responseRef = responseRef;
     dialog.componentRef.instance.init(dialog);
     return responseRef.asObservable();
   }
 
-  info(viewContainerRef: ViewContainerRef, message: string|string[]|object) {
+  info(message: string|string[]|object) {
     const dialog: Dialog = {
-      viewContainerRef: viewContainerRef,
+      viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
       type: DialogType.Info
     };
     return this.open(dialog);
   }
 
-  confirm(viewContainerRef: ViewContainerRef, message: string|string[]|object): Observable<any> {
+  confirm(message: string|string[]|object): Observable<any> {
     const dialog: Dialog = {
-      viewContainerRef: viewContainerRef,
+      viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
       type: DialogType.Confirm
     };
     return this.open(dialog);
   }
 
-  input(viewContainerRef: ViewContainerRef, message: string|string[]|object) {
+  input(message: string|string[]|object) {
     const dialog: Dialog = {
-      viewContainerRef: viewContainerRef,
+      viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
       type: DialogType.Input
     };
     return this.open(dialog);
   }
 
-  warning(viewContainerRef: ViewContainerRef, message: string|string[]|object) {
+  warning(message: string|string[]|object) {
     const dialog: Dialog = {
-      viewContainerRef: viewContainerRef,
+      viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
       type: DialogType.Warning
     };
     return this.open(dialog);
   }
 
-  error(viewContainerRef: ViewContainerRef, message: string|string[]|object) {
+  error(message: string|string[]|object) {
     const dialog: Dialog = {
-      viewContainerRef: viewContainerRef,
+      viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
       type: DialogType.Error
     };
     return this.open(dialog);
   }
 
-  choice(viewContainerRef: ViewContainerRef, message: string|string[]|object, choices: DialogChoice[]) {
+  choice(message: string|string[]|object, choices: DialogChoice[]) {
     const dialog: Dialog = {
-      viewContainerRef: viewContainerRef,
+      viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
       type: DialogType.Choice,
       choices: choices,

@@ -16,6 +16,24 @@ npm install @dannyboyng/dialog
 
 ## Usage
 
+Version 2.0 breaking changes
+
+From version 2.0 onward, you don't need to use viewContainerRef to create a dialog box. You just have to add viewContainerRef to the dialogService once, in app.component.ts. Version 2.0 is not backwards compatible with 1.x
+  
+```typescript
+constructor(
+    private dialog: DialogService,
+    private viewContainerRef: ViewContainerRef,
+) {
+    this.dialog.setViewContainerRef(this.viewContainerRef);
+}
+```
+Now you can open a dialog box without viewContainerRef
+```typescript
+this.dialog.info('For your information');
+```
+
+Version 1.x
 Basic
 
 ```typescript
