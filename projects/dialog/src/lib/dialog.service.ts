@@ -30,6 +30,7 @@ export class DialogService {
     responseRef.subscribe({complete: () => this.refCount--});
     // create the a new dialog
     const factory = this.componentFactoryResolver.resolveComponentFactory(DialogComponent);
+    if (dialog.viewContainerRef == null) {dialog.viewContainerRef = this.rootViewContainerRef; }
     if (dialog.viewContainerRef == null) {
       console.error(
 `Missing ViewContainerRef. Please set the viewContainerRef in the dialog service in app.component.ts
