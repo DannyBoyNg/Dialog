@@ -44,22 +44,30 @@ export class DialogComponent implements OnDestroy {
     if (this.keyboard) {
       if (e.key === 'Escape') {
         this.closeDialog(false);
+        e.stopPropagation();
+        e.preventDefault();
       } else if (e.key === 'Enter' && this.dialogType === DialogType.Input) {
-        this.closeDialog(this.userInput);
+        if (this.userInput != null && this.userInput?.trim().length !== 0) {
+          this.closeDialog(this.userInput);
+          e.stopPropagation();
+          e.preventDefault();
+        }
       } else if (e.key === 'Enter') {
         this.closeDialog(true);
+        e.stopPropagation();
+        e.preventDefault();
       }
     }
-    e.stopPropagation();
-    e.preventDefault();
   }
 
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keypress', ['$event'])
   @HostListener('window:keyup', ['$event'])
   doNotCascade(e: KeyboardEvent) {
-    e.stopPropagation();
-    e.preventDefault();
+    if (e.key === 'Escape' || e.key === 'Enter') {
+      e.stopPropagation();
+      e.preventDefault();
+    }
   }
 
   init(dialog: Dialog) {
