@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { DialogService } from 'projects/dialog/src/public_api';
-import { DialogChoice } from 'projects/dialog/src/lib/dialog.interfaces';
+import { DialogService, DialogChoice } from '../../projects/dialog/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -16,19 +15,19 @@ export class AppComponent {
     this.dialog.setViewContainerRef(this.viewContainerRef);
   }
 
-  info() {
+  info(): void {
     this.dialog.info('For your information');
   }
 
-  warning() {
+  warning(): void {
     this.dialog.warning('Warning');
   }
 
-  error() {
+  error(): void {
     this.dialog.error('Error');
   }
 
-  async confirm() {
+  async confirm(): Promise<void> {
     // Promise
     const response = await this.dialog.confirm('Are you sure?').toPromise<boolean>();
     console.log(response);
@@ -36,7 +35,7 @@ export class AppComponent {
     this.dialog.confirm('Are you really sure?').subscribe((res: boolean) => console.log(res));
   }
 
-  async input() {
+  async input(): Promise<void> {
     // Promise
     const response = await this.dialog.input('What is your name?').toPromise<string>();
     console.log(response);
@@ -44,7 +43,7 @@ export class AppComponent {
     this.dialog.input('What is your name again?').subscribe((res: string) => console.log(res));
   }
 
-  async choice() {
+  async choice(): Promise<void> {
     const choices: DialogChoice[] = [
       {key: 1, value: 'Choice 1'},
       {key: 2, value: 'Choice 2', callback: () => alert('Callback for choice 2 executed.')},
@@ -57,7 +56,7 @@ export class AppComponent {
     this.dialog.choice('Please make a choice again', choices).subscribe((res: string) => console.log(res));
   }
 
-  async choice2() {
+  async choice2(): Promise<void> {
     const choices: DialogChoice[] = [
       {key: 1, value: 'Choice 1'},
       {key: 2, value: 'Choice 2', autoSelect: 10},

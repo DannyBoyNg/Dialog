@@ -30,7 +30,7 @@ export class DialogComponent implements OnDestroy {
     private ref: ChangeDetectorRef,
   ) {}
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.autoUnsubscribe.next();
     this.autoUnsubscribe.complete();
     if (this.responseRef != null) {
@@ -40,7 +40,7 @@ export class DialogComponent implements OnDestroy {
   }
 
   @HostListener('document:keydown', ['$event'])
-  keyPressed(e: KeyboardEvent) {
+  keyPressed(e: KeyboardEvent): void {
     if (this.keyboard) {
       if (e.key === 'Escape') {
         this.closeDialog(false);
@@ -63,14 +63,14 @@ export class DialogComponent implements OnDestroy {
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keypress', ['$event'])
   @HostListener('window:keyup', ['$event'])
-  doNotCascade(e: KeyboardEvent) {
+  doNotCascade(e: KeyboardEvent): void {
     if (e.key === 'Escape' || e.key === 'Enter') {
       e.stopPropagation();
       e.preventDefault();
     }
   }
 
-  init(dialog: Dialog) {
+  init(dialog: Dialog): void {
     this.componentRef = dialog.componentRef;
     this.responseRef = dialog.responseRef;
     this.dialogMessage = dialog.message || ['no message defined'];
@@ -92,7 +92,7 @@ export class DialogComponent implements OnDestroy {
       ).subscribe();
     }
     // auto select
-    for(const item of this.dialogChoices) {
+    for (const item of this.dialogChoices) {
       if (item.autoSelect != null || !isNaN(+item.autoSelect)) {
         const start = item.autoSelect;
         timer(100, 1000).pipe(
@@ -109,7 +109,7 @@ export class DialogComponent implements OnDestroy {
     this.ref.markForCheck();
   }
 
-  closeDialog(response?: any) {
+  closeDialog(response?: any): void {
     if (response != null && this.responseRef != null) {
       this.responseRef.next(response);
       this.responseRef.complete();
@@ -122,7 +122,7 @@ export class DialogComponent implements OnDestroy {
     if (this.componentRef != null) {this.componentRef.destroy(); }
   }
 
-  updateDialog() {
+  updateDialog(): void {
     // set message to display
     this.messageArray = this.dialogMessage;
     // check for this common error
@@ -153,11 +153,11 @@ export class DialogComponent implements OnDestroy {
     }
   }
 
-  clickOutsideDialog() {
+  clickOutsideDialog(): void {
     if (this.closeDialogOnClickBackdrop) { this.closeDialog(false); }
   }
 
-  onKey(userInput: string) {
+  onKey(userInput: string): void {
     this.userInput = userInput;
   }
 }

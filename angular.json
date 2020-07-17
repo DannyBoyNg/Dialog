@@ -3,11 +3,8 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DialogApp": {
-      "root": "",
-      "sourceRoot": "src",
+    "Dialog": {
       "projectType": "application",
-      "prefix": "app",
       "schematics": {
         "@schematics/angular:class": {
           "skipTests": true
@@ -21,6 +18,9 @@
         "@schematics/angular:guard": {
           "skipTests": true
         },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
         "@schematics/angular:module": {
           "skipTests": true
         },
@@ -31,16 +31,19 @@
           "skipTests": true
         }
       },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
-            "outputPath": "dist/DialogApp",
+            "outputPath": "dist/Dialog",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -63,7 +66,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -75,7 +77,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }
@@ -84,18 +87,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "DialogApp:build"
+            "browserTarget": "Dialog:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "DialogApp:build:production"
+              "browserTarget": "Dialog:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "DialogApp:build"
+            "browserTarget": "Dialog:build"
           }
         },
         "test": {
@@ -103,78 +106,63 @@
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": [],
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
             ]
           }
-        }
-      }
-    },
-    "DialogApp-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
+        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "DialogApp:serve"
+            "devServerTarget": "Dialog:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "DialogApp:serve:production"
+              "devServerTarget": "Dialog:serve:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
     },
     "dialog": {
+      "projectType": "library",
       "root": "projects/dialog",
       "sourceRoot": "projects/dialog/src",
-      "projectType": "library",
-      "prefix": "dbn",
+      "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
             "tsConfig": "projects/dialog/tsconfig.lib.json",
             "project": "projects/dialog/ng-package.json"
-          }
-        ,          "configurations": {
+          },
+          "configurations": {
             "production": {
               "tsConfig": "projects/dialog/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -196,7 +184,6 @@
           }
         }
       }
-    }
-  },
-  "defaultProject": "DialogApp"
+    }},
+  "defaultProject": "Dialog"
 }

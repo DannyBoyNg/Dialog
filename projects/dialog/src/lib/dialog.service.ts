@@ -16,11 +16,11 @@ export class DialogService {
     @Inject(ComponentFactoryResolver) private componentFactoryResolver: ComponentFactoryResolver
   ) { }
 
-  setViewContainerRef(viewContainerRef: ViewContainerRef) {
+  setViewContainerRef(viewContainerRef: ViewContainerRef): void {
     this.rootViewContainerRef = viewContainerRef;
   }
 
-  open(dialog: Dialog) {
+  open(dialog: Dialog): Observable<any> {
     const responseRef = new Subject<any>();
     // don't open a new dialog if there is already a dialog opened with the same message
     const currentMessage = JSON.stringify(dialog.message);
@@ -49,7 +49,7 @@ constructor(
     return responseRef.asObservable();
   }
 
-  info(message: string|string[]|object) {
+  info(message: string|string[]|object): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
@@ -67,7 +67,7 @@ constructor(
     return this.open(dialog);
   }
 
-  input(message: string|string[]|object) {
+  input(message: string|string[]|object): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
@@ -76,7 +76,7 @@ constructor(
     return this.open(dialog);
   }
 
-  warning(message: string|string[]|object) {
+  warning(message: string|string[]|object): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
@@ -85,7 +85,7 @@ constructor(
     return this.open(dialog);
   }
 
-  error(message: string|string[]|object) {
+  error(message: string|string[]|object): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
@@ -94,12 +94,12 @@ constructor(
     return this.open(dialog);
   }
 
-  choice(message: string|string[]|object, choices: DialogChoice[]) {
+  choice(message: string|string[]|object, choices: DialogChoice[]): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
       type: DialogType.Choice,
-      choices: choices,
+      choices,
     };
     return this.open(dialog);
   }

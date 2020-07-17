@@ -1,7 +1,7 @@
 {
   "name": "@dannyboyng/dialog",
   "description": "An Angular library to display dialog windows to the user",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "license" : "MIT",
   "keywords": [
     "dialog",
@@ -23,5 +23,8 @@
     "@angular/common": ">=6.0.0 <12.0.0",
     "@angular/core": ">=6.0.0 <12.0.0",
     "@angular/cdk": ">=6.0.0 <12.0.0"
+  },
+  "dependencies": {
+    "tslib": ">=2.0.0"
   }
 }
