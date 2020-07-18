@@ -6,8 +6,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [DialogComponent],
   imports: [
-    DragDropModule,
     CommonModule,
+    DragDropModule,
   ],
   exports: [DialogComponent]
 })

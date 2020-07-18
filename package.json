@@ -1,5 +1,5 @@
 {
-  "name": "dialog",
+  "name": "dialog-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -12,7 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~10.0.4",
-    "@angular/cdk": "~10.0.2",
+    "@angular/cdk": "^10.0.2",
     "@angular/common": "~10.0.4",
     "@angular/compiler": "~10.0.4",
     "@angular/core": "~10.0.4",
