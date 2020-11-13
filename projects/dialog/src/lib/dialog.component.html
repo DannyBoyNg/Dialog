@@ -28,7 +28,7 @@
         </ng-container>
         <ng-container *ngSwitchCase="DialogType.Input">
           <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" (click)="closeDialog(userInput)" [disabled]="userInput?.trim().length < 1">OK</button>
+          <button class="noselect" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '')">OK</button>
         </ng-container>
         <ng-container *ngSwitchDefault>
           <button class="noselect" (click)="closeDialog(true)">OK <span *ngIf="countDown">({{countDown}})</span></button>

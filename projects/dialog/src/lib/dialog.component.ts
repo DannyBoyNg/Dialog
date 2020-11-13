@@ -93,8 +93,9 @@ export class DialogComponent implements OnDestroy {
     }
     // auto select
     for (const item of this.dialogChoices) {
-      if (item.autoSelect != null || !isNaN(+item.autoSelect)) {
+      if (item.autoSelect != null && !isNaN(+item.autoSelect)) {
         const start = item.autoSelect;
+        if (start == null) {break; }
         timer(100, 1000).pipe(
           map(x => start - x),
           take(start + 1),
@@ -124,7 +125,7 @@ export class DialogComponent implements OnDestroy {
 
   updateDialog(): void {
     // set message to display
-    this.messageArray = this.dialogMessage;
+    this.messageArray = this.dialogMessage ?? [];
     // check for this common error
     for (const item of this.messageArray) {
       if (item === 'Http failure response for (unknown url): 0 Unknown Error') {

@@ -118,7 +118,7 @@ constructor(
       return messageArray;
     } else if (typeof unknown === 'object') {
       for (const [key, value] of Object.entries(unknown)) {
-        messageArray.push([`${key}: ${this.prepMessage(value).join(' ')}`]);
+        messageArray.push(`${key}: ${this.prepMessage(value).join(' ')}`);
       }
       return messageArray;
     } else {
