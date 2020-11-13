@@ -1,4 +1,4 @@
-import { Component, ComponentRef, HostListener, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, ComponentRef, HostListener, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { map, take, tap, takeUntil } from 'rxjs/operators';
 import { DialogChoice, DialogType, Dialog } from './dialog.interfaces';
@@ -7,10 +7,11 @@ import { DialogChoice, DialogType, Dialog } from './dialog.interfaces';
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css']
 })
-export class DialogComponent implements OnDestroy {
+export class DialogComponent implements OnDestroy, AfterViewInit {
 
   private autoUnsubscribe = new Subject<void>();
 
+  private dialog: Dialog|undefined;
   private componentRef: ComponentRef<DialogComponent>|undefined;
   private responseRef: Subject<any>|undefined;
   private closeDialogOnClickBackdrop: boolean|undefined;
@@ -26,9 +27,17 @@ export class DialogComponent implements OnDestroy {
   autoSelectTimer: number|undefined;
   DialogType = DialogType;
 
+  @ViewChild('inputBox') inputBox: ElementRef|undefined;
+
   constructor(
     private ref: ChangeDetectorRef,
   ) {}
+
+  ngAfterViewInit(): void {
+    if (this.inputBox != null && this.dialog?.prePopulateInput != null) {
+      this.inputBox.nativeElement.value = this.dialog.prePopulateInput;
+    }
+  }
 
   ngOnDestroy(): void {
     this.autoUnsubscribe.next();
@@ -46,12 +55,16 @@ export class DialogComponent implements OnDestroy {
         this.closeDialog(false);
         e.stopPropagation();
         e.preventDefault();
-      } else if (e.key === 'Enter' && this.dialogType === DialogType.Input) {
+      } else if ((e.key === 'Enter' && this.dialogType === DialogType.Input)
+             || (e.ctrlKey === true && e.key === 'Enter' && this.dialogType === DialogType.InputMultiline))
+      {
         if (this.userInput != null && this.userInput?.trim().length !== 0) {
           this.closeDialog(this.userInput);
           e.stopPropagation();
           e.preventDefault();
         }
+      } else if (e.key === 'Enter' && this.dialogType === DialogType.InputMultiline) {
+        // do nothing
       } else if (e.key === 'Enter') {
         this.closeDialog(true);
         e.stopPropagation();
@@ -64,13 +77,16 @@ export class DialogComponent implements OnDestroy {
   @HostListener('window:keypress', ['$event'])
   @HostListener('window:keyup', ['$event'])
   doNotCascade(e: KeyboardEvent): void {
-    if (e.key === 'Escape' || e.key === 'Enter') {
+    if (e.key === 'Enter' && this.dialogType === DialogType.InputMultiline) {
+      // do nothing
+    } else if (e.key === 'Escape' || e.key === 'Enter') {
       e.stopPropagation();
       e.preventDefault();
     }
   }
 
   init(dialog: Dialog): void {
+    this.dialog = dialog;
     this.componentRef = dialog.componentRef;
     this.responseRef = dialog.responseRef;
     this.dialogMessage = dialog.message || ['no message defined'];
@@ -80,6 +96,7 @@ export class DialogComponent implements OnDestroy {
     this.dialogChoices = (dialog.choices) ? [...dialog.choices].reverse() : [];
     this.keyboard = (dialog.keyboard != null) ? dialog.keyboard : true;
     this.closeDialogOnClickBackdrop = ((dialog.backdrop != null && dialog.backdrop !== 'static') || dialog.backdrop == null) ? true : false;
+    if (dialog.prePopulateInput) {this.userInput = dialog.prePopulateInput; }
     // auto close
     if (dialog.autoClose != null) {
       const start = dialog.autoClose;

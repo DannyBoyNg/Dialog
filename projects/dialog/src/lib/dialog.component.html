@@ -8,30 +8,42 @@
       <div class="dialog-close noselect" (click)="closeDialog(false)">&times;</div>
     </div>
     <div class="dialog-content">
-      <div class="dialog-icon" [ngClass]="{'icon-info': dialogType===DialogType.Info, 'icon-warning':dialogType===DialogType.Warning, 'icon-error':dialogType===DialogType.Error, 'icon-question':dialogType===DialogType.Choice||dialogType===DialogType.Confirm||dialogType===DialogType.Input}"></div>
+      <ng-container *ngIf="dialogType===DialogType.InputMultiline; else regularIcon">
+        <div class="keyboard-icon"></div>
+      </ng-container>
+      <ng-template #regularIcon>
+        <div class="dialog-icon" [ngClass]="{'icon-info': dialogType===DialogType.Info, 'icon-warning':dialogType===DialogType.Warning, 'icon-error':dialogType===DialogType.Error, 'icon-question':dialogType===DialogType.Choice||dialogType===DialogType.Confirm||dialogType===DialogType.Input}"></div>
+      </ng-template>
       <div class="dialog-message">
         <p *ngFor="let m of messageArray">{{m}}</p>
       </div>
       <div *ngIf="dialogType === DialogType.Input" class="dialog-input">
-        <input #inputEl class="dialog-input-box" type="text" (keyup)="onKey(inputEl.value)"> {{inputEl.focus()}}
+        <input #inputEl #inputBox class="dialog-input-box" type="text" (keyup)="onKey(inputEl.value)"> {{inputEl.focus()}}
+      </div>
+      <div *ngIf="dialogType === DialogType.InputMultiline" class="dialog-input">
+        <textarea #inputEl class="dialog-input-box" rows="5" (keyup)="onKey(inputEl.value)">{{userInput}}</textarea> {{inputEl.focus()}}
       </div>
     </div>
     <div class="dialog-footer">
       <ng-container [ngSwitch]="dialogType">
         <ng-container *ngSwitchCase="DialogType.Choice">
-          <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" *ngFor="let choice of dialogChoices" (click)="closeDialog(choice.key)">{{choice.value}} <span *ngIf="choice.autoSelect">({{autoSelectTimer}})</span></button>
+          <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
+          <button class="noselect" title="Enter" *ngFor="let choice of dialogChoices" (click)="closeDialog(choice.key)">{{choice.value}} <span *ngIf="choice.autoSelect">({{autoSelectTimer}})</span></button>
         </ng-container>
         <ng-container *ngSwitchCase="DialogType.Confirm">
-          <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" (click)="closeDialog(true)">OK</button>
+          <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
+          <button class="noselect" title="Enter" (click)="closeDialog(true)">OK</button>
         </ng-container>
         <ng-container *ngSwitchCase="DialogType.Input">
-          <button class="noselect" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '')">OK</button>
+          <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
+          <button class="noselect" title="Enter" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '')">OK</button>
+        </ng-container>
+        <ng-container *ngSwitchCase="DialogType.InputMultiline">
+          <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
+          <button class="noselect" title="Ctrl+Enter" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '')">OK</button>
         </ng-container>
         <ng-container *ngSwitchDefault>
-          <button class="noselect" (click)="closeDialog(true)">OK <span *ngIf="countDown">({{countDown}})</span></button>
+          <button class="noselect" title="Enter" (click)="closeDialog(true)">OK <span *ngIf="countDown">({{countDown}})</span></button>
         </ng-container>
       </ng-container>
     </div>

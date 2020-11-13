@@ -43,6 +43,15 @@ export class AppComponent {
     this.dialog.input('What is your name again?').subscribe((res: string) => console.log(res));
   }
 
+  async inputMultiline(): Promise<void> {
+    // Promise
+    const response = await this.dialog.inputMultiline('Please enter your description').toPromise<string>();
+    console.log(response);
+    // Observable
+    this.dialog.inputMultiline('Please enter another description?', 'This is prepopulated text.')
+    .subscribe((res: string) => console.log(res));
+  }
+
   async choice(): Promise<void> {
     const choices: DialogChoice[] = [
       {key: 1, value: 'Choice 1'},

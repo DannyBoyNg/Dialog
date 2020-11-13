@@ -13,6 +13,7 @@ export interface Dialog {
   keyboard?: boolean;
   backdrop?: boolean|'static';
   autoClose?: number;
+  prePopulateInput?: string;
 }
 
 export interface DialogChoice {
@@ -28,5 +29,6 @@ export enum DialogType {
   Error,
   Confirm,
   Choice,
-  Input
+  Input,
+  InputMultiline,
 }
