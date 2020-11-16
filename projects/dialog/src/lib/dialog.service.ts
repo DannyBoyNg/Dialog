@@ -67,21 +67,24 @@ constructor(
     return this.open(dialog);
   }
 
-  input(message: string|string[]|object, prePopulateInput: string|null = null): Observable<any> {
+  input(message: string|string[]|object, prePopulateInput: string|null = null, allowEmptyString: boolean = false): Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
-      type: DialogType.Input
+      type: DialogType.Input,
+      allowEmptyString,
     };
     if (prePopulateInput != null) {dialog.prePopulateInput = prePopulateInput; }
     return this.open(dialog);
   }
 
-  inputMultiline(message: string|string[]|object, prePopulateInput: string|null = null): Observable<any> {
+  inputMultiline(message: string|string[]|object, prePopulateInput: string|null = null, allowEmptyString: boolean = false)
+  : Observable<any> {
     const dialog: Dialog = {
       viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
       type: DialogType.InputMultiline,
+      allowEmptyString,
     };
     if (prePopulateInput != null) {dialog.prePopulateInput = prePopulateInput; }
     return this.open(dialog);

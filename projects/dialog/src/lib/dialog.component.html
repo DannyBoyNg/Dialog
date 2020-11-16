@@ -36,11 +36,11 @@
         </ng-container>
         <ng-container *ngSwitchCase="DialogType.Input">
           <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" title="Enter" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '')">OK</button>
+          <button class="noselect" title="Enter" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '' && allowEmptyString === false)">OK</button>
         </ng-container>
         <ng-container *ngSwitchCase="DialogType.InputMultiline">
           <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" title="Ctrl+Enter" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '')">OK</button>
+          <button class="noselect" title="Ctrl+Enter" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '' && allowEmptyString === false)">OK</button>
         </ng-container>
         <ng-container *ngSwitchDefault>
           <button class="noselect" title="Enter" (click)="closeDialog(true)">OK <span *ngIf="countDown">({{countDown}})</span></button>

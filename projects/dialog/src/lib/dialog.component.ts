@@ -25,6 +25,7 @@ export class DialogComponent implements OnDestroy, AfterViewInit {
   dialogChoices: DialogChoice[]|undefined;
   countDown: number|undefined;
   autoSelectTimer: number|undefined;
+  allowEmptyString: boolean|undefined;
   DialogType = DialogType;
 
   @ViewChild('inputBox') inputBox: ElementRef|undefined;
@@ -96,6 +97,7 @@ export class DialogComponent implements OnDestroy, AfterViewInit {
     this.dialogChoices = (dialog.choices) ? [...dialog.choices].reverse() : [];
     this.keyboard = (dialog.keyboard != null) ? dialog.keyboard : true;
     this.closeDialogOnClickBackdrop = ((dialog.backdrop != null && dialog.backdrop !== 'static') || dialog.backdrop == null) ? true : false;
+    this.allowEmptyString = dialog.allowEmptyString ?? false;
     if (dialog.prePopulateInput) {this.userInput = dialog.prePopulateInput; }
     // auto close
     if (dialog.autoClose != null) {
@@ -150,6 +152,9 @@ export class DialogComponent implements OnDestroy, AfterViewInit {
       }
     }
     switch (this.dialogType) {
+      case DialogType.InputMultiline:
+        this.dialogTitle = this.dialogTitle || 'Input field';
+        break;
       case DialogType.Input:
         this.dialogTitle = this.dialogTitle || 'User input requested';
         break;

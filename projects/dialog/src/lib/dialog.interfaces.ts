@@ -14,6 +14,7 @@ export interface Dialog {
   backdrop?: boolean|'static';
   autoClose?: number;
   prePopulateInput?: string;
+  allowEmptyString?: boolean;
 }
 
 export interface DialogChoice {

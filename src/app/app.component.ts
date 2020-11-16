@@ -45,10 +45,10 @@ export class AppComponent {
 
   async inputMultiline(): Promise<void> {
     // Promise
-    const response = await this.dialog.inputMultiline('Please enter your description').toPromise<string>();
+    const response = await this.dialog.inputMultiline('Please enter your description', null, true).toPromise<string>();
     console.log(response);
     // Observable
-    this.dialog.inputMultiline('Please enter another description?', 'This is prepopulated text.')
+    this.dialog.inputMultiline('Please enter another description?', 'This is prepopulated text.', true)
     .subscribe((res: string) => console.log(res));
   }
 
