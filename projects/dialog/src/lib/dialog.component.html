@@ -17,11 +17,11 @@
       <div class="dialog-message">
         <p *ngFor="let m of messageArray">{{m}}</p>
       </div>
-      <div *ngIf="dialogType === DialogType.Input" class="dialog-input">
+      <div *ngIf="dialogType === DialogType.Input" class="dialog-input-box-container">
         <input #inputEl #inputBox class="dialog-input-box" type="text" (keyup)="onKey(inputEl.value)"> {{inputEl.focus()}}
       </div>
-      <div *ngIf="dialogType === DialogType.InputMultiline" class="dialog-input">
-        <textarea #inputEl class="dialog-input-box" rows="5" (keyup)="onKey(inputEl.value)">{{userInput}}</textarea> {{inputEl.focus()}}
+      <div *ngIf="dialogType === DialogType.InputMultiline" class="dialog-input-textarea-container">
+        <textarea #inputEl class="dialog-input-textarea" rows="8" (keyup)="onKey(inputEl.value)">{{userInput}}</textarea> {{inputEl.focus()}}
       </div>
     </div>
     <div class="dialog-footer">

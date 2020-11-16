@@ -85,6 +85,7 @@ constructor(
       message: this.prepMessage(message),
       type: DialogType.InputMultiline,
       allowEmptyString,
+      backdrop: 'static',
     };
     if (prePopulateInput != null) {dialog.prePopulateInput = prePopulateInput; }
     return this.open(dialog);

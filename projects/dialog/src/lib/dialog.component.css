@@ -99,9 +99,12 @@
 .icon-warning {
   background-position: -49px 0;
 }
-.dialog-input {
+.dialog-input-box-container {
   padding: 10px 75px 10px 75px;
   width: calc(100% - 150px);
+}
+.dialog-input-textarea-container {
+  padding: 10px 15px 10px 15px;
 }
 .dialog-input-box {
   width: calc(100% - 11px);
@@ -109,6 +112,14 @@
   font-size: 14px;
   padding-left:7px;
   outline-color: #0077D7CC;
+}
+.dialog-input-textarea {
+  width: calc(100% - 11px);
+  font-family: 'Segoe UI';
+  font-size: 14px;
+  padding-left:7px;
+  outline-color: #0077D7CC;
+  min-height: 158px;
 }
 .circle-icon {
   position: absolute;
