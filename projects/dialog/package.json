@@ -1,13 +1,13 @@
 {
   "name": "@dannyboyng/dialog",
-  "description": "An Angular library to display dialog windows to the user",
-  "version": "2.0.8",
+  "description": "An Angular library to display beautiful dialog windows to the user",
+  "version": "13.0.0",
   "license" : "MIT",
   "keywords": [
     "dialog",
     "dialogs",
     "angular",
-    "angular 6+",
+    "angular 13+",
     "info",
     "warning",
     "error",
@@ -20,8 +20,8 @@
     "url": "https://github.com/DannyBoyNg/Dialog.git"
   },
   "peerDependencies": {
-    "@angular/common": ">=6.0.0 <14.0.0",
-    "@angular/core": ">=6.0.0 <14.0.0",
-    "@angular/cdk": ">=6.0.0 <14.0.0"
+    "@angular/common": ">=13.0.0 <20.0.0",
+    "@angular/core": ">=13.0.0 <20.0.0",
+    "@angular/cdk": ">=13.0.0 <20.0.0"
   }
 }

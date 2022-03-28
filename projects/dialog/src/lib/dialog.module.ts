@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { DialogComponent } from './dialog.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
-  declarations: [DialogComponent],
+  declarations: [
+    DialogComponent
+  ],
   imports: [
     CommonModule,
     DragDropModule,
   ],
-  exports: [DialogComponent]
+  exports: [
+    DialogComponent
+  ]
 })
 export class DialogModule { }

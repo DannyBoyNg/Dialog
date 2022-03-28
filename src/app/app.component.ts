@@ -1,4 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { DialogService, DialogChoice } from '../../projects/dialog/src/public-api';
 
 @Component({
@@ -29,7 +30,7 @@ export class AppComponent {
 
   async confirm(): Promise<void> {
     // Promise
-    const response = await this.dialog.confirm('Are you sure?').toPromise<boolean>();
+    const response = await firstValueFrom(this.dialog.confirm('Are you sure?'));
     console.log(response);
     // Observable
     this.dialog.confirm('Are you really sure?').subscribe((res: boolean) => console.log(res));
@@ -37,7 +38,7 @@ export class AppComponent {
 
   async input(): Promise<void> {
     // Promise
-    const response = await this.dialog.input('What is your name?').toPromise<string>();
+    const response = await firstValueFrom(this.dialog.input('What is your name?'));
     console.log(response);
     // Observable
     this.dialog.input('What is your name again?').subscribe((res: string) => console.log(res));
@@ -45,7 +46,7 @@ export class AppComponent {
 
   async inputMultiline(): Promise<void> {
     // Promise
-    const response = await this.dialog.inputMultiline('Please enter your description', null, true).toPromise<string>();
+    const response = await firstValueFrom(this.dialog.inputMultiline('Please enter your description', null, true));
     console.log(response);
     // Observable
     this.dialog.inputMultiline('Please enter another description?', 'This is prepopulated text.', true)
@@ -59,7 +60,7 @@ export class AppComponent {
       {key: 3, value: 'Choice 3'}
     ];
     // Promise
-    const response = await this.dialog.choice('Please make a choice', choices).toPromise<string>();
+    const response = await firstValueFrom(this.dialog.choice('Please make a choice', choices));
     console.log(response);
     // Observable
     this.dialog.choice('Please make a choice again', choices).subscribe((res: string) => console.log(res));
@@ -72,7 +73,7 @@ export class AppComponent {
       {key: 3, value: 'Choice 3'}
     ];
     // Promise
-    const response = await this.dialog.choice('Please make a choice', choices).toPromise<string>();
+    const response = await firstValueFrom(this.dialog.choice('Please make a choice', choices));
     console.log(response);
   }
 }

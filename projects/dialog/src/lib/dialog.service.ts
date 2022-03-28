@@ -1,4 +1,4 @@
-import { Injectable, ViewContainerRef, Inject, ComponentFactoryResolver } from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Dialog, DialogType, DialogChoice } from './dialog.interfaces';
 import { DialogComponent } from './dialog.component';
@@ -12,9 +12,7 @@ export class DialogService {
   private refCount = 0;
   private lastMessage = '';
 
-  constructor(
-    @Inject(ComponentFactoryResolver) private componentFactoryResolver: ComponentFactoryResolver
-  ) { }
+  constructor() {}
 
   setViewContainerRef(viewContainerRef: ViewContainerRef): void {
     this.rootViewContainerRef = viewContainerRef;
@@ -29,7 +27,6 @@ export class DialogService {
     this.refCount++;
     responseRef.subscribe({complete: () => this.refCount--});
     // create the a new dialog
-    const factory = this.componentFactoryResolver.resolveComponentFactory(DialogComponent);
     if (dialog.viewContainerRef == null) {dialog.viewContainerRef = this.rootViewContainerRef; }
     if (dialog.viewContainerRef == null) {
       console.error(
@@ -43,7 +40,7 @@ constructor(
 }`);
       throw Error('ViewContainerRef not found');
     }
-    dialog.componentRef = dialog.viewContainerRef.createComponent(factory);
+    dialog.componentRef = dialog.viewContainerRef.createComponent(DialogComponent);
     dialog.responseRef = responseRef;
     dialog.componentRef.instance.init(dialog);
     return responseRef.asObservable();
