@@ -16,11 +16,97 @@ npm install @dannyboyng/dialog
 
 ## Usage
 
+Version 20.0 is Angular 20 compliant and has some cosmetic improvements.
+
+Always set the ViewContainerRef before using this library or the dialogs will not work.
+```typescript
+//app.component.ts
+constructor(
+    private dialog: DialogService,
+    private viewContainerRef: ViewContainerRef,
+) {
+    this.dialog.setViewContainerRef(this.viewContainerRef);
+}
+```
+Available dialog settings
+```typescript
+// available dialog settings
+const dialog: Dialog = {
+  message: ['For your information'], // every string in array will be on a newline.
+  type: DialogType.Info, // set a dialog type; info, warning, error, confirm, input, multilineInput and choice.
+  backdrop: false, // true: show a backdrop (default), false: don't show a backdrop, 'static': show backdrop but click on backdrop won't close dialog.
+  autoClose: 10, // automatically close/cancel dialog in 10 seconds.
+  keyboard: false, // true: Enter and Escape will close dialog (default), false: keyboard has no effect.
+  title: 'my custom dialog title', // use a custom dialog title.
+  showIcon: false, // true: show the dialog icons (default), false: don't show dialog icons.
+  okButtonText: 'Sure'; // use custom ok button text.
+  cancelButtonText: 'Nope'; // use custom cancel button text.
+  prePopulateInput: 'This is pre populated input text'; // You can set a pre defined text for input dialogs.
+  allowEmptyString: false; // true: the input dialog will allow you to submit an empty string (default), false: empty string is not allowed
+};
+```
+How to set global settings
+```typescript
+//app.config.ts
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAnimationsAsync(),
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
+    provideRouter(routes),
+    provideDialogConfig({keyboard: false, showIcon: false}) // <--- add this provider to your app.config.ts to configure global dialog settings
+  ]
+};
+```
+How to use
+```typescript
+info() {
+  this.dialog.info('For your information');
+}
+
+warning() {
+  this.dialog.warning('Warning');
+}
+
+error() {
+  this.dialog.error('Error');
+}
+
+async custom() {
+  //promise
+  const response = await firstValueFrom(this.dialog.open({
+    message: ['This is a custom dialog message.','Second line of the message.'],
+    type: DialogType.Confirm,
+    title: 'Custom Dialog Title',
+    showIcon: false,
+    autoClose: 15,
+    backdrop: 'static',
+    keyboard: false,
+    okButtonText: 'Sure',
+    cancelButtonText: 'Nope',
+  });
+  console.log(response);
+  //observable
+  this.dialog.open({
+    message: ['This is a custom dialog message.','Second line of the message.'],
+    type: DialogType.Confirm,
+    title: 'Custom Dialog Title',
+    showIcon: false,
+    autoClose: 15,
+    backdrop: 'static',
+    keyboard: false,
+    okButtonText: 'Sure',
+    cancelButtonText: 'Nope',
+  }).subscribe((response: string) => console.log(response));;
+}
+```
+
 Version 2.0 breaking changes
 
-From version 2.0 onward, you don't need to use viewContainerRef to create a dialog box. You just have to add viewContainerRef to the dialogService once, in app.component.ts. Version 2.0 is not backwards compatible with 1.x
+From version 2.0 onward, you don't need to use viewContainerRef for every dialog window to create a dialog box. You just have to add viewContainerRef to the dialogService once, in app.component.ts. Version 2.0 is not backwards compatible with 1.x
   
 ```typescript
+//app.component.ts
 constructor(
     private dialog: DialogService,
     private viewContainerRef: ViewContainerRef,

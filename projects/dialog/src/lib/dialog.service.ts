@@ -1,34 +1,38 @@
-import { Injectable, ViewContainerRef } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-import { Dialog, DialogType, DialogChoice } from './dialog.interfaces';
+
+import { Inject, Injectable, Optional, ViewContainerRef, signal } from '@angular/core';
 import { DialogComponent } from './dialog.component';
+import { Observable, Subject } from 'rxjs';
+import { Dialog, DialogChoice, DialogGlobalConfig, DialogType } from './dialog.interfaces';
+import { DIALOG_GLOBAL_CONFIG } from './dialog.tokens';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class DialogService {
+  private rootViewContainerRef: ViewContainerRef | undefined;
+  private refCount = signal(0);
+  private lastMessage = signal('');
 
-  private rootViewContainerRef: ViewContainerRef|undefined;
-  private refCount = 0;
-  private lastMessage = '';
-
-  constructor() {}
+  constructor(
+    @Optional() @Inject(DIALOG_GLOBAL_CONFIG) private globalConfig: DialogGlobalConfig
+  ) {}
 
   setViewContainerRef(viewContainerRef: ViewContainerRef): void {
     this.rootViewContainerRef = viewContainerRef;
   }
 
   open(dialog: Dialog): Observable<any> {
+    //merge global config with user supplied config
+    dialog = { ...this.globalConfig, ...dialog }; 
+
     const responseRef = new Subject<any>();
-    // don't open a new dialog if there is already a dialog opened with the same message
     const currentMessage = JSON.stringify(dialog.message);
-    if (this.refCount > 0 && currentMessage === this.lastMessage) {return responseRef.asObservable(); }
-    this.lastMessage = currentMessage;
-    this.refCount++;
-    responseRef.subscribe({complete: () => this.refCount--});
-    // create the a new dialog
-    if (dialog.viewContainerRef == null) {dialog.viewContainerRef = this.rootViewContainerRef; }
-    if (dialog.viewContainerRef == null) {
+    if (this.refCount() > 0 && currentMessage === this.lastMessage()) {
+      return responseRef.asObservable();
+    }
+    this.lastMessage.set(currentMessage);
+    this.refCount.set(this.refCount() + 1);
+    responseRef.subscribe({ complete: () => this.refCount.set(this.refCount() - 1) });
+    const container = dialog.viewContainerRef ?? this.rootViewContainerRef;
+    if (!container) {
       console.error(
 `Missing ViewContainerRef. Please set the viewContainerRef in the dialog service in app.component.ts
 ----------------------------------------------------------------------------------------------------
@@ -38,103 +42,72 @@ constructor(
 ) {
   this.dialog.setViewContainerRef(this.viewContainerRef);
 }`);
-      throw Error('ViewContainerRef not found');
+      throw new Error('ViewContainerRef not found');
     }
-    dialog.componentRef = dialog.viewContainerRef.createComponent(DialogComponent);
+    dialog.componentRef = container.createComponent(DialogComponent);
     dialog.responseRef = responseRef;
     dialog.componentRef.instance.init(dialog);
     return responseRef.asObservable();
   }
 
-  info(message: string|string[]|object): Observable<any> {
-    const dialog: Dialog = {
-      viewContainerRef: this.rootViewContainerRef,
-      message: this.prepMessage(message),
-      type: DialogType.Info
-    };
-    return this.open(dialog);
+  info(message: string | string[] | object): Observable<any> {
+    return this.openDialog(DialogType.Info, message);
   }
 
-  confirm(message: string|string[]|object): Observable<any> {
-    const dialog: Dialog = {
-      viewContainerRef: this.rootViewContainerRef,
-      message: this.prepMessage(message),
-      type: DialogType.Confirm
-    };
-    return this.open(dialog);
+  confirm(message: string | string[] | object): Observable<any> {
+    return this.openDialog(DialogType.Confirm, message);
   }
 
-  input(message: string|string[]|object, prePopulateInput: string|null = null, allowEmptyString: boolean = false): Observable<any> {
+  input(message: string | string[] | object, prePopulateInput?: string, allowEmptyString?: boolean): Observable<any> {
+    return this.openDialog(DialogType.Input, message, prePopulateInput, allowEmptyString);
+  }
+
+  inputMultiline(message: string | string[] | object, prePopulateInput?: string, allowEmptyString?: boolean ): Observable<any> {
+    return this.openDialog(DialogType.InputMultiline, message, prePopulateInput, allowEmptyString, 'static');
+  }
+
+  warning(message: string | string[] | object): Observable<any> {
+    return this.openDialog(DialogType.Warning, message);
+  }
+
+  error(message: string | string[] | object): Observable<any> {
+    return this.openDialog(DialogType.Error, message);
+  }
+
+  choice(message: string | string[] | object, choices: DialogChoice[]): Observable<any> {
+    return this.open({
+    viewContainerRef: this.rootViewContainerRef,
+    message: this.prepMessage(message),
+    type: DialogType.Choice,
+    choices
+    });
+  }
+
+  private openDialog(
+    type: DialogType,
+    message: string | string[] | object,
+    prePopulateInput: string | null = null,
+    allowEmptyString: boolean|undefined = true,
+    backdrop?: boolean|'static'
+    ): Observable<any> 
+  {
     const dialog: Dialog = {
       viewContainerRef: this.rootViewContainerRef,
       message: this.prepMessage(message),
-      type: DialogType.Input,
+      type,
       allowEmptyString,
-    };
-    if (prePopulateInput != null) {dialog.prePopulateInput = prePopulateInput; }
-    return this.open(dialog);
-  }
-
-  inputMultiline(message: string|string[]|object, prePopulateInput: string|null = null, allowEmptyString: boolean = false)
-  : Observable<any> {
-    const dialog: Dialog = {
-      viewContainerRef: this.rootViewContainerRef,
-      message: this.prepMessage(message),
-      type: DialogType.InputMultiline,
-      allowEmptyString,
-      backdrop: 'static',
-    };
-    if (prePopulateInput != null) {dialog.prePopulateInput = prePopulateInput; }
-    return this.open(dialog);
-  }
-
-  warning(message: string|string[]|object): Observable<any> {
-    const dialog: Dialog = {
-      viewContainerRef: this.rootViewContainerRef,
-      message: this.prepMessage(message),
-      type: DialogType.Warning
+      backdrop,
+      prePopulateInput: prePopulateInput ?? undefined
     };
     return this.open(dialog);
   }
 
-  error(message: string|string[]|object): Observable<any> {
-    const dialog: Dialog = {
-      viewContainerRef: this.rootViewContainerRef,
-      message: this.prepMessage(message),
-      type: DialogType.Error
-    };
-    return this.open(dialog);
-  }
-
-  choice(message: string|string[]|object, choices: DialogChoice[]): Observable<any> {
-    const dialog: Dialog = {
-      viewContainerRef: this.rootViewContainerRef,
-      message: this.prepMessage(message),
-      type: DialogType.Choice,
-      choices,
-    };
-    return this.open(dialog);
-  }
-
-  private prepMessage(unknown: string|string[]|object): string[] {
-    const messageArray = [];
-    if (typeof unknown === 'string') {
-      messageArray.push(unknown);
-      return messageArray;
-    } else if (unknown instanceof Array) {
-      for (const part of unknown) {
-        if (typeof part === 'string') {
-          messageArray.push(part);
-        }
-      }
-      return messageArray;
-    } else if (typeof unknown === 'object') {
-      for (const [key, value] of Object.entries(unknown)) {
-        messageArray.push(`${key}: ${this.prepMessage(value).join(' ')}`);
-      }
-      return messageArray;
-    } else {
-      return [''];
+  private prepMessage(input: string | string[] | object): string[] {
+    if (typeof input === 'string') return [input];
+    if (Array.isArray(input)) return input.filter(item => typeof item === 'string');
+    if (typeof input === 'object') {
+      return Object.entries(input).flatMap(([key, value]) => [`${key}: ${this.prepMessage(value).join(' ')}`]);
     }
+    return [''];
   }
 }

@@ -2,6 +2,18 @@ import { ComponentRef, ViewContainerRef } from '@angular/core';
 import { DialogComponent } from './dialog.component';
 import { Subject } from 'rxjs';
 
+export interface DialogGlobalConfig {
+  title?: string;
+  keyboard?: boolean;
+  backdrop?: boolean|'static';
+  autoClose?: number;
+  prePopulateInput?: string;
+  allowEmptyString?: boolean;
+  showIcon?: boolean;
+  okButtonText?: string;
+  cancelButtonText?: string;
+}
+
 export interface Dialog {
   viewContainerRef?: ViewContainerRef;
   componentRef?: ComponentRef<DialogComponent>;
@@ -15,6 +27,9 @@ export interface Dialog {
   autoClose?: number;
   prePopulateInput?: string;
   allowEmptyString?: boolean;
+  showIcon?: boolean;
+  okButtonText?: string;
+  cancelButtonText?: string;
 }
 
 export interface DialogChoice {

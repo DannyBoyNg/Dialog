@@ -1,51 +1,127 @@
 <!-- The dialog -->
-<div class="dialog" [ngClass]="{'no-backdrop': backDrop === false}" (click)="clickOutsideDialog()">
+<div class="dialog" [class]="{'no-backdrop': backDrop === false}" (click)="clickOutsideDialog()">
 
   <!-- dialog window -->
   <div class="dialog-window" (click)="$event.stopPropagation()" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragBoundary=".dialog">
     <div class="dialog-header" cdkDragHandle>
       <div class="dialog-title noselect">{{dialogTitle}}</div>
-      <div class="dialog-close noselect" (click)="closeDialog(false)">&times;</div>
+      <div class="dialog-close noselect" (click)="closeDialog(false)" title="Esc">&times;</div>
     </div>
     <div class="dialog-content">
-      <ng-container *ngIf="dialogType===DialogType.InputMultiline; else regularIcon">
-        <div class="keyboard-icon"></div>
-      </ng-container>
-      <ng-template #regularIcon>
-        <div class="dialog-icon" [ngClass]="{'icon-info': dialogType===DialogType.Info, 'icon-warning':dialogType===DialogType.Warning, 'icon-error':dialogType===DialogType.Error, 'icon-question':dialogType===DialogType.Choice||dialogType===DialogType.Confirm||dialogType===DialogType.Input}"></div>
-      </ng-template>
-      <div class="dialog-message">
-        <p *ngFor="let m of messageArray">{{m}}</p>
+      <div class="message-container">
+        @if(showIcon) {
+          @if(dialogType===DialogType.InputMultiline) {
+            <div class="keyboard-icon"></div>
+          }
+          @else {
+            <div class="dialog-icon" [class]="{'icon-info': dialogType===DialogType.Info, 'icon-warning':dialogType===DialogType.Warning, 'icon-error':dialogType===DialogType.Error, 'icon-question':dialogType===DialogType.Choice||dialogType===DialogType.Confirm||dialogType===DialogType.Input}"></div>
+          }
+        }
+        <div class="dialog-message">
+          @for(m of messageArray; track $index) {
+            <p>{{m}}</p>
+          }
+        </div>
       </div>
-      <div *ngIf="dialogType === DialogType.Input" class="dialog-input-box-container">
-        <input #inputEl #inputBox class="dialog-input-box" type="text" (keyup)="onKey(inputEl.value)"> {{inputEl.focus()}}
-      </div>
-      <div *ngIf="dialogType === DialogType.InputMultiline" class="dialog-input-textarea-container">
-        <textarea #inputEl class="dialog-input-textarea" rows="8" (keyup)="onKey(inputEl.value)">{{userInput}}</textarea> {{inputEl.focus()}}
-      </div>
+      @if(dialogType === DialogType.Input) {
+        <div class="dialog-input-box-container">
+          <input #inputEl #inputBox class="dialog-input-box" type="text" (keyup)="onKey(inputEl.value)"> {{inputEl.focus()}}
+        </div>
+      }
+      @if(dialogType === DialogType.InputMultiline) {
+        <div class="dialog-input-textarea-container">
+          <textarea #inputEl class="dialog-input-textarea" rows="8" (keyup)="onKey(inputEl.value)">{{userInput}}</textarea> {{inputEl.focus()}}
+        </div>
+      }
     </div>
     <div class="dialog-footer">
-      <ng-container [ngSwitch]="dialogType">
-        <ng-container *ngSwitchCase="DialogType.Choice">
-          <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" title="Enter" *ngFor="let choice of dialogChoices" (click)="closeDialog(choice.key)">{{choice.value}} <span *ngIf="choice.autoSelect">({{autoSelectTimer}})</span></button>
-        </ng-container>
-        <ng-container *ngSwitchCase="DialogType.Confirm">
-          <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" title="Enter" (click)="closeDialog(true)">OK</button>
-        </ng-container>
-        <ng-container *ngSwitchCase="DialogType.Input">
-          <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" title="Enter" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '' && allowEmptyString === false)">OK</button>
-        </ng-container>
-        <ng-container *ngSwitchCase="DialogType.InputMultiline">
-          <button class="noselect" title="Esc" (click)="closeDialog(false)">Cancel <span *ngIf="countDown">({{countDown}})</span></button>
-          <button class="noselect" title="Ctrl+Enter" (click)="closeDialog(userInput)" [disabled]="userInput == null || (userInput != null && userInput?.trim() === '' && allowEmptyString === false)">OK</button>
-        </ng-container>
-        <ng-container *ngSwitchDefault>
-          <button class="noselect" title="Enter" (click)="closeDialog(true)">OK <span *ngIf="countDown">({{countDown}})</span></button>
-        </ng-container>
-      </ng-container>
+      @switch(dialogType) {
+        @case(DialogType.Choice) {
+          @for(choice of dialogChoices; track choice.key; let i = $index) {
+            <app-button
+              class="noselect"
+              style="float: left;"
+              (click)="closeDialog(choice.key)"
+              [isSelected]="selectedButtonStates()[i+2]"
+              [isFocused]="!!choice.autoSelect">
+                {{choice.value}}
+                @if(choice.autoSelect) {<span>&nbsp;({{autoSelectTimer()}})</span>}
+                @if(keyboard && i<9) {<kbd>{{i+1}}</kbd>}
+            </app-button>
+          }
+          <app-button
+            class="noselect"
+            (click)="closeDialog(false)"
+            [isSelected]="selectedButtonStates()[0]">
+              {{cancelButtonText}}
+              @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
+              @if(keyboard) {<kbd>Esc</kbd>}
+          </app-button>
+        }
+        @case(DialogType.Confirm) {
+          <app-button
+            class="noselect"
+            (click)="closeDialog(false)"
+            [isSelected]="selectedButtonStates()[0]">
+              {{cancelButtonText}}
+              @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
+              @if(keyboard) {<kbd>Esc</kbd>}
+          </app-button>
+          <app-button
+            class="noselect"
+            (click)="closeDialog(true)"
+            [isSelected]="selectedButtonStates()[1]">
+              {{okButtonText}}
+              @if(keyboard) {<kbd>Enter</kbd>}
+          </app-button>
+        }
+        @case(DialogType.Input) {
+          <app-button
+            class="noselect"
+            (click)="closeDialog(false)"
+            [isSelected]="selectedButtonStates()[0]">
+              {{cancelButtonText}}
+              @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
+              @if(keyboard) {<kbd>Esc</kbd>}
+          </app-button>
+          <app-button
+            class="noselect"
+            (click)="closeDialog(userInput)"
+            [isSelected]="selectedButtonStates()[1]"
+            [disabled]="(userInput.trim() === '' && allowEmptyString === false)">
+              {{okButtonText}}
+              @if(keyboard && !(userInput.trim() === '' && allowEmptyString === false)) {<kbd>Enter</kbd>}
+          </app-button>
+        }
+        @case(DialogType.InputMultiline) {
+          <app-button
+            class="noselect"
+            (click)="closeDialog(false)"
+            [isSelected]="selectedButtonStates()[0]">
+              {{cancelButtonText}}
+              @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
+              @if(keyboard) {<kbd>Esc</kbd>}
+          </app-button>
+          <app-button
+            class="noselect"
+            (click)="closeDialog(userInput)"
+            [isSelected]="selectedButtonStates()[1]"
+            [disabled]="userInput == null || (userInput != null && userInput.trim() === '' && allowEmptyString === false)">
+              {{okButtonText}}
+              @if(keyboard && !(userInput == null || (userInput != null && userInput.trim() === '' && allowEmptyString === false))) {<kbd>Ctrl</kbd>+<kbd style="margin-left:0">Enter</kbd>}
+          </app-button>
+        }
+        @default {
+          <app-button
+            class="noselect"
+            (click)="closeDialog(true)"
+            [isSelected]="selectedButtonStates()[1]">
+              {{okButtonText}}
+              @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
+              @if(keyboard) {<kbd>Enter</kbd>}
+          </app-button>
+        }
+      }
     </div>
   </div>
 

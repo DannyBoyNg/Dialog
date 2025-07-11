@@ -1,15 +1,14 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { DialogService, DialogChoice } from '../../projects/dialog/src/public-api';
+import { DialogService, DialogChoice, DialogType } from '../../../../projects/dialog/src/public-api';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.html',
+  styleUrl: './app.css'
 })
-export class AppComponent {
-
-  constructor(
+export class App {
+    constructor(
     private dialog: DialogService,
     private viewContainerRef: ViewContainerRef,
   ) {
@@ -46,7 +45,7 @@ export class AppComponent {
 
   async inputMultiline(): Promise<void> {
     // Promise
-    const response = await firstValueFrom(this.dialog.inputMultiline('Please enter your description', null, true));
+    const response = await firstValueFrom(this.dialog.inputMultiline('Please enter your description', undefined, true));
     console.log(response);
     // Observable
     this.dialog.inputMultiline('Please enter another description?', 'This is prepopulated text.', true)
@@ -57,7 +56,11 @@ export class AppComponent {
     const choices: DialogChoice[] = [
       {key: 1, value: 'Choice 1'},
       {key: 2, value: 'Choice 2', callback: () => alert('Callback for choice 2 executed.')},
-      {key: 3, value: 'Choice 3'}
+      {key: 3, value: 'Choice 3'},
+      {key: 4, value: 'Choice 4'},
+      {key: 5, value: 'Choice 5'},
+      {key: 6, value: 'Choice 6'},
+      {key: 7, value: 'Choice 7'},
     ];
     // Promise
     const response = await firstValueFrom(this.dialog.choice('Please make a choice', choices));
@@ -76,4 +79,20 @@ export class AppComponent {
     const response = await firstValueFrom(this.dialog.choice('Please make a choice', choices));
     console.log(response);
   }
+
+  async custom() {
+    const response = await firstValueFrom(this.dialog.open({
+      message: ['This is a custom dialog message.','Second line of the message.'],
+      type: DialogType.Confirm,
+      title: 'Custom Dialog Title',
+      showIcon: false,
+      autoClose: 15,
+      backdrop: 'static',
+      keyboard: false,
+      okButtonText: 'Sure',
+      cancelButtonText: 'Nope',
+    }));
+    console.log(response);
+  }
+
 }
