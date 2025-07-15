@@ -95,6 +95,7 @@
   margin-left: 15px;
   color: #0077D7;
   height: 50px;
+  min-width: 50px;
   width: 50px;
 }
 .icon-question {

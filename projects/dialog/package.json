@@ -1,7 +1,7 @@
 {
   "name": "@dannyboyng/dialog",
   "description": "An Angular library to display basic dialog windows to the user",
-  "version": "20.0.0",
+  "version": "20.0.3",
   "license" : "MIT",
   "keywords": [
     "dialog",
@@ -24,12 +24,15 @@
     "url": "https://github.com/DannyBoyNg/Dialog.git"
   },
   "peerDependencies": {
-    "@angular/animation": ">=17.0.0 <30.0.0",
+    "@angular/animations": ">=17.0.0 <30.0.0",
     "@angular/core": ">=17.0.0 <30.0.0",
     "@angular/cdk": ">=17.0.0 <30.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "main": "fesm2022/dannyboyng-dialog.mjs",
+  "module": "fesm2022/dannyboyng-dialog.mjs",
+  "typings": "index.d.ts"
 }
