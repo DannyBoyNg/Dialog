@@ -2,7 +2,7 @@
 <div class="dialog" [class]="{'no-backdrop': backDrop === false}" (click)="clickOutsideDialog()">
 
   <!-- dialog window -->
-  <div class="dialog-window" (click)="$event.stopPropagation()" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragBoundary=".dialog">
+  <div class="dialog-window" (click)="$event.stopPropagation()" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragBoundary=".dialog" cdkTrapFocus cdkTrapFocusAutoCapture>
     <div class="dialog-header" cdkDragHandle>
       <div class="dialog-title noselect">{{dialogTitle}}</div>
       <div class="dialog-close noselect" (click)="closeDialog(false)" title="Esc">&times;</div>
@@ -25,12 +25,12 @@
       </div>
       @if(dialogType === DialogType.Input) {
         <div class="dialog-input-box-container">
-          <input #inputEl #inputBox class="dialog-input-box" type="text" (keyup)="onKey(inputEl.value)"> {{inputEl.focus()}}
+          <input #inputEl #inputBox class="dialog-input-box" type="text" (keyup)="onKey(inputEl.value)">
         </div>
       }
       @if(dialogType === DialogType.InputMultiline) {
         <div class="dialog-input-textarea-container">
-          <textarea #inputEl class="dialog-input-textarea" rows="8" (keyup)="onKey(inputEl.value)">{{userInput}}</textarea> {{inputEl.focus()}}
+          <textarea #inputEl class="dialog-input-textarea" rows="8" (keyup)="onKey(inputEl.value)">{{userInput}}</textarea>
         </div>
       }
     </div>
@@ -39,12 +39,10 @@
         @case(DialogType.Choice) {
           @for(choice of dialogChoices; track choice.key; let i = $index) {
             <app-button
-              [isFocused]="true"
               class="noselect"
               style="float: left;"
               (click)="closeDialog(choice.key)"
-              [isSelected]="selectedButtonStates()[i+2]"
-              [isFocused]="!!choice.autoSelect">
+              [isSelected]="selectedButtonStates()[i+2]">
                 {{choice.value}}
                 @if(choice.autoSelect) {<span>&nbsp;({{autoSelectTimer()}})</span>}
                 @if(keyboard && i<9) {<kbd>{{i+1}}</kbd>}
@@ -79,7 +77,6 @@
         }
         @case(DialogType.Input) {
           <app-button
-            [isFocused]="true"
             class="noselect"
             (click)="closeDialog(false)"
             [isSelected]="selectedButtonStates()[0]">

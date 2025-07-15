@@ -4,11 +4,12 @@ import { Subject, timer } from 'rxjs';
 import { map, take, tap, takeUntil } from 'rxjs/operators';
 import { DialogChoice, DialogType, Dialog } from './dialog.interfaces';
 import { Button } from './button/button';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @Component({
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css'],
-  imports: [DragDropModule, Button],
+  imports: [DragDropModule, Button, A11yModule],
 })
 export class DialogComponent implements OnDestroy, AfterViewInit {
 
