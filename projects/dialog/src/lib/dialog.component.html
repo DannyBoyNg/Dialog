@@ -39,6 +39,7 @@
         @case(DialogType.Choice) {
           @for(choice of dialogChoices; track choice.key; let i = $index) {
             <app-button
+              [isFocused]="true"
               class="noselect"
               style="float: left;"
               (click)="closeDialog(choice.key)"
@@ -60,6 +61,7 @@
         }
         @case(DialogType.Confirm) {
           <app-button
+            [isFocused]="true"
             class="noselect"
             (click)="closeDialog(false)"
             [isSelected]="selectedButtonStates()[0]">
@@ -77,6 +79,7 @@
         }
         @case(DialogType.Input) {
           <app-button
+            [isFocused]="true"
             class="noselect"
             (click)="closeDialog(false)"
             [isSelected]="selectedButtonStates()[0]">
@@ -95,6 +98,7 @@
         }
         @case(DialogType.InputMultiline) {
           <app-button
+            [isFocused]="true"
             class="noselect"
             (click)="closeDialog(false)"
             [isSelected]="selectedButtonStates()[0]">
@@ -113,6 +117,7 @@
         }
         @default {
           <app-button
+            [isFocused]="true"
             class="noselect"
             (click)="closeDialog(true)"
             [isSelected]="selectedButtonStates()[1]">
