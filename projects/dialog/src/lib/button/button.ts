@@ -1,11 +1,4 @@
 import { Component, effect, HostListener, input, InputSignal, signal } from '@angular/core';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-} from '@angular/animations';
 import { ConditionalFocus } from '../conditional-focus';
 
 @Component({
@@ -13,17 +6,6 @@ import { ConditionalFocus } from '../conditional-focus';
   imports: [ConditionalFocus],
   templateUrl: './button.html',
   styleUrl: './button.css',
-  animations: [
-    trigger('hoverState', [
-      state('normal', style({})),
-      state('hovered',
-        style({
-          backgroundColor: '#E5F1FB',
-          borderColor: '#0078D7',
-        })),
-      transition('* => *', [animate('0.2s')]),
-    ]),
-  ],
 })
 export class Button {
 
