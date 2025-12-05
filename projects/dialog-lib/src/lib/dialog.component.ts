@@ -5,6 +5,7 @@ import { map, take, tap, takeUntil } from 'rxjs/operators';
 import { DialogChoice, DialogType, Dialog } from './dialog.interfaces';
 import { Button } from './button/button';
 import { A11yModule } from '@angular/cdk/a11y';
+import { OverlayRef } from '@angular/cdk/overlay';
 
 @Component({
   templateUrl: './dialog.component.html',
@@ -18,9 +19,11 @@ export class DialogComponent implements OnDestroy, AfterViewInit {
   private dialog: Dialog|undefined;
   private componentRef: ComponentRef<DialogComponent>|undefined;
   private responseRef: Subject<any>|undefined;
+  private overlayRef: OverlayRef|undefined;
   private closeDialogOnClickBackdrop: boolean|undefined;
   private dialogMessage: string[]|undefined;
-  keyboard = true;
+  keyboard = signal(true);
+  keyboardIcons = signal(false);
   userInput: string = '';
   dialogTitle = '';
   messageArray: string[] = [];
@@ -55,7 +58,7 @@ export class DialogComponent implements OnDestroy, AfterViewInit {
 
   @HostListener('document:keydown', ['$event'])
   keyPressed(e: KeyboardEvent): void {
-    if (this.keyboard) {
+    if (this.keyboard()) {
       if (e.key === 'Escape') {
         this.selectedButtonStates.update(x => {x[0] = true; return [...x];});
         setTimeout(() => this.closeDialog(false),500);
@@ -101,12 +104,14 @@ export class DialogComponent implements OnDestroy, AfterViewInit {
     this.dialog = dialog;
     this.componentRef = dialog.componentRef;
     this.responseRef = dialog.responseRef;
+    this.overlayRef = dialog.overlayRef;
     this.dialogMessage = dialog.message || ['no message defined'];
     this.dialogTitle = dialog.title || '';
     this.dialogType = dialog.type;
     this.backDrop = dialog.backdrop;
     this.dialogChoices = (dialog.choices) ? [...dialog.choices] : [];
-    this.keyboard = (dialog.keyboard != null) ? dialog.keyboard : true;
+    this.keyboard.set((dialog.keyboard != null) ? dialog.keyboard : true);
+    this.keyboardIcons.set((dialog.keyboardIcons != null) ? dialog.keyboardIcons : false);
     this.closeDialogOnClickBackdrop = ((dialog.backdrop != null && dialog.backdrop !== 'static') || dialog.backdrop == null) ? true : false;
     this.allowEmptyString = dialog.allowEmptyString ?? true;
     this.showIcon = dialog.showIcon ?? true;
@@ -162,7 +167,8 @@ export class DialogComponent implements OnDestroy, AfterViewInit {
         choice.callback();
       }
     }
-    if (this.componentRef != null) {this.componentRef.destroy(); }
+    //if (this.componentRef != null) {this.componentRef.destroy(); }
+    if (this.overlayRef != null) {this.overlayRef.dispose(); }
   }
 
   updateDialog(): void {

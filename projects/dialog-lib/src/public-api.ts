@@ -1,5 +1,5 @@
 /*
- * Public API Surface of dialog
+ * Public API Surface of dialog-lib
  */
 
 export * from './lib/dialog.service';

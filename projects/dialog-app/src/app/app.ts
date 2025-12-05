@@ -1,19 +1,16 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { DialogService, DialogChoice, DialogType } from '../../../../projects/dialog/src/public-api';
+import { DialogService, DialogChoice, DialogType } from '../../../../projects/dialog-lib/src/public-api';
 
 @Component({
   selector: 'app-root',
+  imports: [],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-    constructor(
-    private dialog: DialogService,
-    private viewContainerRef: ViewContainerRef,
-  ) {
-    this.dialog.setViewContainerRef(this.viewContainerRef);
-  }
+  private dialog = inject(DialogService);
+  protected readonly title = signal('dialog-app');
 
   info(): void {
     this.dialog.info('For your information');
@@ -94,5 +91,4 @@ export class App {
     }));
     console.log(response);
   }
-
 }

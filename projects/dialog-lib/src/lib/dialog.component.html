@@ -2,7 +2,7 @@
 <div class="dialog" [class]="{'no-backdrop': backDrop === false}" (click)="clickOutsideDialog()">
 
   <!-- dialog window -->
-  <div class="dialog-window" (click)="$event.stopPropagation()" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragBoundary=".dialog" cdkTrapFocus cdkTrapFocusAutoCapture>
+  <div class="dialog-window" (click)="$event.stopPropagation()" cdkDrag cdkDragBoundary=".dialog" cdkTrapFocus cdkTrapFocusAutoCapture>
     <div class="dialog-header" cdkDragHandle>
       <div class="dialog-title noselect">{{dialogTitle}}</div>
       <div class="dialog-close noselect" (click)="closeDialog(false)" title="Esc">&times;</div>
@@ -45,7 +45,7 @@
               [isSelected]="selectedButtonStates()[i+2]">
                 {{choice.value}}
                 @if(choice.autoSelect) {<span>&nbsp;({{autoSelectTimer()}})</span>}
-                @if(keyboard && i<9) {<kbd>{{i+1}}</kbd>}
+                @if(keyboardIcons() && i<9) {<kbd>{{i+1}}</kbd>}
             </app-button>
           }
           <app-button
@@ -54,7 +54,7 @@
             [isSelected]="selectedButtonStates()[0]">
               {{cancelButtonText}}
               @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
-              @if(keyboard) {<kbd>Esc</kbd>}
+              @if(keyboardIcons()) {<kbd>Esc</kbd>}
           </app-button>
         }
         @case(DialogType.Confirm) {
@@ -65,14 +65,14 @@
             [isSelected]="selectedButtonStates()[0]">
               {{cancelButtonText}}
               @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
-              @if(keyboard) {<kbd>Esc</kbd>}
+              @if(keyboardIcons()) {<kbd>Esc</kbd>}
           </app-button>
           <app-button
             class="noselect"
             (click)="closeDialog(true)"
             [isSelected]="selectedButtonStates()[1]">
               {{okButtonText}}
-              @if(keyboard) {<kbd>Enter</kbd>}
+              @if(keyboardIcons()) {<kbd>Enter</kbd>}
           </app-button>
         }
         @case(DialogType.Input) {
@@ -82,7 +82,7 @@
             [isSelected]="selectedButtonStates()[0]">
               {{cancelButtonText}}
               @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
-              @if(keyboard) {<kbd>Esc</kbd>}
+              @if(keyboardIcons()) {<kbd>Esc</kbd>}
           </app-button>
           <app-button
             class="noselect"
@@ -90,7 +90,7 @@
             [isSelected]="selectedButtonStates()[1]"
             [disabled]="(userInput.trim() === '' && allowEmptyString === false)">
               {{okButtonText}}
-              @if(keyboard && !(userInput.trim() === '' && allowEmptyString === false)) {<kbd>Enter</kbd>}
+              @if(keyboardIcons() && !(userInput.trim() === '' && allowEmptyString === false)) {<kbd>Enter</kbd>}
           </app-button>
         }
         @case(DialogType.InputMultiline) {
@@ -101,7 +101,7 @@
             [isSelected]="selectedButtonStates()[0]">
               {{cancelButtonText}}
               @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
-              @if(keyboard) {<kbd>Esc</kbd>}
+              @if(keyboardIcons()) {<kbd>Esc</kbd>}
           </app-button>
           <app-button
             class="noselect"
@@ -109,7 +109,7 @@
             [isSelected]="selectedButtonStates()[1]"
             [disabled]="userInput == null || (userInput != null && userInput.trim() === '' && allowEmptyString === false)">
               {{okButtonText}}
-              @if(keyboard && !(userInput == null || (userInput != null && userInput.trim() === '' && allowEmptyString === false))) {<kbd>Ctrl</kbd>+<kbd style="margin-left:0">Enter</kbd>}
+              @if(keyboardIcons() && !(userInput == null || (userInput != null && userInput.trim() === '' && allowEmptyString === false))) {<kbd>Ctrl</kbd>+<kbd style="margin-left:0">Enter</kbd>}
           </app-button>
         }
         @default {
@@ -120,7 +120,7 @@
             [isSelected]="selectedButtonStates()[1]">
               {{okButtonText}}
               @if(countDown()) {<span>&nbsp;({{countDown()}})</span>}
-              @if(keyboard) {<kbd>Enter</kbd>}
+              @if(keyboardIcons()) {<kbd>Enter</kbd>}
           </app-button>
         }
       }

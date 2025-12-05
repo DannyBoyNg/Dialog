@@ -16,18 +16,8 @@ npm install @dannyboyng/dialog
 
 ## Usage
 
-Version 20.0 is Angular 20 compliant and has some cosmetic improvements.
+Version 21.0 is Angular 21 compliant and has some cosmetic improvements.
 
-Always set the ViewContainerRef before using this library or the dialogs will not work.
-```typescript
-//app.component.ts
-constructor(
-    private dialog: DialogService,
-    private viewContainerRef: ViewContainerRef,
-) {
-    this.dialog.setViewContainerRef(this.viewContainerRef);
-}
-```
 Available dialog settings
 ```typescript
 // available dialog settings
@@ -37,8 +27,9 @@ const dialog: Dialog = {
   backdrop: false, // true: show a backdrop (default), false: don't show a backdrop, 'static': show backdrop but click on backdrop won't close dialog.
   autoClose: 10, // automatically close/cancel dialog in 10 seconds.
   keyboard: false, // true: Enter and Escape will close dialog (default), false: keyboard has no effect.
+  keyboardIcons: false, // true: keyboard icons will display on the button, false: keyboard icons are not visible (default).
   title: 'my custom dialog title', // use a custom dialog title.
-  showIcon: false, // true: show the dialog icons (default), false: don't show dialog icons.
+  showIcon: false, // true: show the dialog icons (default), false: don't show dialog icons. These icons appear to the left of the dialog message.
   okButtonText: 'Sure'; // use custom ok button text.
   cancelButtonText: 'Nope'; // use custom cancel button text.
   prePopulateInput: 'This is pre populated input text'; // You can set a pre defined text for input dialogs.
@@ -97,63 +88,43 @@ async custom() {
     keyboard: false,
     okButtonText: 'Sure',
     cancelButtonText: 'Nope',
-  }).subscribe((response: string) => console.log(response));;
+  }).subscribe((response: string) => console.log(response));
 }
 ```
 
-Version 2.0 breaking changes
-
-From version 2.0 onward, you don't need to use viewContainerRef for every dialog window to create a dialog box. You just have to add viewContainerRef to the dialogService once, in app.component.ts. Version 2.0 is not backwards compatible with 1.x
-  
-```typescript
-//app.component.ts
-constructor(
-    private dialog: DialogService,
-    private viewContainerRef: ViewContainerRef,
-) {
-    this.dialog.setViewContainerRef(this.viewContainerRef);
-}
-```
-Now you can open a dialog box without viewContainerRef
-```typescript
-this.dialog.info('For your information');
-```
-
-Version 1.x
 Basic
 
 ```typescript
 constructor(
   private dialog: DialogService,
-  private viewContainerRef: ViewContainerRef, // get viewContainerRef from Dependancy Injection
 ) {}
 
 info() {
-  this.dialog.info(this.viewContainerRef, 'For your information');
+  this.dialog.info('For your information');
 }
 
 warning() {
-  this.dialog.warning(this.viewContainerRef, 'Warning');
+  this.dialog.warning('Warning');
 }
 
 error() {
-  this.dialog.error(this.viewContainerRef, 'Error');
+  this.dialog.error('Error');
 }
 
 async confirm() {
   // Promise
-  const response = await this.dialog.confirm(this.viewContainerRef, 'Are you sure?').toPromise<boolean>();
+  const response = await this.dialog.confirm('Are you sure?').toPromise<boolean>();
   console.log(response);
   // Observable
-  this.dialog.confirm(this.viewContainerRef, 'Are you really sure?').subscribe((res: boolean) => console.log(res));
+  this.dialog.confirm('Are you really sure?').subscribe((res: boolean) => console.log(res));
 }
 
 async input() {
   // Promise
-  const response = await this.dialog.input(this.viewContainerRef, 'What is your name?').toPromise<string>();
+  const response = await this.dialog.input('What is your name?').toPromise<string>();
   console.log(response);
   // Observable
-  this.dialog.input(this.viewContainerRef, 'What is your name again?').subscribe((res: string) => console.log(res));
+  this.dialog.input('What is your name again?').subscribe((res: string) => console.log(res));
 }
 
 async choice() {
@@ -163,10 +134,10 @@ async choice() {
     {key: 3, value: 'Choice 3'}
   ];
   // Promise
-  const response = await this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).toPromise<string>();
+  const response = await this.dialog.choice('Please make a choice', choices).toPromise<string>();
   console.log(response);
   // Observable
-  this.dialog.choice(this.viewContainerRef, 'Please make a choice', choices).subscribe((res: string) => console.log(res));
+  this.dialog.choice('Please make a choice', choices).subscribe((res: string) => console.log(res));
 }
 ```
 
@@ -174,7 +145,6 @@ Advanced
 
 ```typescript
 const dialog: Dialog = {
-  viewContainerRef: this.viewContainerRef,
   message: 'For your information',
   type: DialogType.Info,
   backdrop: false, // true: show a backdrop (default), false: don't show a backdrop, 'static': show backdrop but click on backdrop won't close dialog
@@ -191,7 +161,6 @@ const choices: DialogChoice[] = [
   {key: 3, value: 'Choice 3'}
 ];
 const dialog: Dialog = {
-  viewContainerRef: this.viewContainerRef,
   message: 'Pick a choice',
   type: DialogType.Choice,
   choices: choices,

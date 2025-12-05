@@ -4,8 +4,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "dialog": [
-        "./dist/dialog"
+      "dialog-lib": [
+        "./dist/dialog-lib"
       ]
     },
     "strict": true,
@@ -24,13 +24,15 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "typeCheckHostBindings": true,
     "strictTemplates": true
   },
   "files": [],
   "references": [
     {
-      "path": "./projects/dialog/tsconfig.lib.json"
+      "path": "./projects/dialog-lib/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/dialog-lib/tsconfig.spec.json"
     },
     {
       "path": "./projects/dialog-app/tsconfig.app.json"
